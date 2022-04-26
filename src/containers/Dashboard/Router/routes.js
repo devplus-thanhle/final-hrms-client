@@ -3,6 +3,8 @@ import CreateCampaign from "../Campaign/createCampaign";
 import React from "react";
 import NotFound from "../../404Page";
 import ProfieByCampaign from "../Profile/profileByCampaign";
+import Profile from "../Profile/profile";
+import DetailProfile from "../Profile/detailProfile";
 
 export const routes = [
   {
@@ -17,7 +19,14 @@ export const routes = [
     path: "/campaign/:id/profile",
     component: <ProfieByCampaign />,
   },
-
+  {
+    path: "/profile",
+    component: <Profile />,
+  },
+  {
+    path: "/profile/:id",
+    component: <DetailProfile />,
+  },
   {
     path: "*",
     component: <NotFound />,
