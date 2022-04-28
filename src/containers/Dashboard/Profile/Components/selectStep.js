@@ -11,46 +11,52 @@ import {
 import React, { useState } from "react";
 import { Select } from "antd";
 import { useDispatch } from "react-redux";
-import { changeStatus } from "../../../../shared/actions/profileAction";
+import { changeStepSingle } from "../../../../shared/actions/profileAction";
 
 const { Option } = Select;
 const { Text } = Typography;
 const { TextArea } = Input;
 
-const SelectStatus = ({ record }) => {
+const SelectStep = ({ record }) => {
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [idProfile, setIdProfile] = useState("");
+  const [reject, setReject] = useState(false);
   const [valueReject, setValueReject] = useState("");
   const [status, setStatus] = useState("");
   const onChangeValue = async (e, id) => {
     setIdProfile(id);
     setStatus(e);
     switch (e) {
-      case "pending":
-        console.log("pending", { e, id });
-        await dispatch(changeStatus({ id, e }));
+      case "cvnew":
+        await dispatch(changeStepSingle({ id, e }));
         break;
-      case "passed":
-        console.log("passed", { e, id });
-        await dispatch(changeStatus({ id, e }));
+      case "interview":
+        showModal();
         break;
-      case "reject":
-        console.log("reject", { e, id });
-
-        showModalReject();
+      case "phone":
+        await dispatch(changeStepSingle({ id, e }));
+        break;
+      case "test":
+        showModal();
+        break;
+      case "offer":
+        await dispatch(changeStepSingle({ id, e }));
         break;
       default:
         break;
     }
   };
 
-  const showModalReject = () => {
+  const showModal = () => {
+    setReject(false);
     setIsModalVisible(true);
   };
 
-  const handleReject = () => {
-    dispatch(changeStatus({ id: idProfile, e: status, valueReject }));
+  const handleOk = () => {
+    dispatch(changeStepSingle({ id: idProfile, e: status, date, time }));
     setIsModalVisible(false);
   };
 
@@ -61,36 +67,39 @@ const SelectStatus = ({ record }) => {
   return (
     <>
       <Select
-        value={record.status}
+        value={record.step}
         onChange={(e) => {
           onChangeValue(e, record._id);
         }}
         style={{ width: 100, height: "fit-content" }}
       >
-        <Option value="pending">PENDING</Option>
-        <Option value="passed">PASSED</Option>
-        <Option value="reject">REJECT</Option>
+        <Option value="cvnew">CV NEW</Option>
+        <Option value="phone">PHONE</Option>
+        <Option value="test">TEST</Option>
+        <Option value="interview">INTERVIEW</Option>
+        <Option value="offer">OFFER</Option>
       </Select>
       <Modal
         title="Enter information"
         visible={isModalVisible}
-        onOk={handleReject}
+        onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
         closeIcon={<span onClick={handleCancel}>X</span>}
       >
-        <Space direction="vertical" style={{ width: "100%" }}>
-          <Text>Reason:</Text>
-          <TextArea
-            placeholder="Reject Reason"
-            onChange={(e) => setValueReject(e.target.value)}
+        <>
+          <DatePicker onChange={(date, dateString) => setDate(dateString)} />
+          <TimePicker
+            format="HH:mm"
+            onOk={(time) => {
+              setTime(new Date(time).toLocaleTimeString());
+            }}
           />
-        </Space>
-
+        </>
         <Divider />
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <Button disabled={valueReject ? false : true} onClick={handleReject}>
-            {valueReject ? "😃 OK!" : "😢 Value empty!"}
+          <Button disabled={date && time ? false : true} onClick={handleOk}>
+            {date && time ? "😃 OK!" : "😢 Value empty!"}
           </Button>
         </div>
       </Modal>
@@ -98,4 +107,4 @@ const SelectStatus = ({ record }) => {
   );
 };
 
-export default SelectStatus;
+export default SelectStep;

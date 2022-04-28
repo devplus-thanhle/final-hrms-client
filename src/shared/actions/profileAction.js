@@ -9,11 +9,10 @@ export const PROFILE_TYPES = {
   LOADING: "LOADING",
 };
 
-export const getProfiles = () => async (dispatch) => {
+export const getProfiles = (page) => async (dispatch) => {
   try {
     dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
-    const res = await getDataAPI("all-profiles");
-    console.log(res);
+    const res = await getDataAPI(`all-profiles?page=${page}`);
     dispatch({
       type: PROFILE_TYPES.GET_PROFILES,
       payload: { data: res.data.result.profiles, count: res.data.result.count },
@@ -28,14 +27,13 @@ export const getProfile = (id) => async (dispatch) => {
   try {
     dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
     const res = await getDataAPI(`get-profile/${id}`);
-    console.log(res);
     dispatch({
       type: PROFILE_TYPES.GET_PROFILE,
       payload: res.data.result,
     });
     dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
   } catch (error) {
-    console.log(error);
+    dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
   }
 };
 
@@ -55,17 +53,16 @@ export const getProfileByCampaign = (id) => async (dispatch) => {
   } catch (error) {}
 };
 
-export const changeStatusSingle =
-  ({ id, e, date, time, valueReject }) =>
+export const changeStepSingle =
+  ({ id, e, date, time }) =>
   async (dispatch) => {
     try {
       dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
 
-      const ress = await patchDataAPI(`change-status-profile/${id}`, {
-        status: e,
+      const ress = await patchDataAPI(`change-step-profile/${id}`, {
+        step: e,
         date,
         time,
-        reason: valueReject,
       });
       dispatch({
         type: PROFILE_TYPES.UPDATE_PROFILE,
@@ -81,3 +78,39 @@ export const changeStatusSingle =
       console.log(error);
     }
   };
+
+export const changeStatus =
+  ({ id, e, valueReject }) =>
+  async (dispatch) => {
+    console.log({ id, e });
+    try {
+      dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
+      const ress = await patchDataAPI(`change-status-profile/${id}`, {
+        status: e,
+        reason: valueReject,
+      });
+      console.log(ress);
+      dispatch({
+        type: PROFILE_TYPES.UPDATE_PROFILE,
+        payload: ress.data.result,
+      });
+      dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
+      dispatch({
+        type: GLOBALTYPES.ALERT,
+        payload: { success: ress.data.msg },
+      });
+      dispatch({ type: GLOBALTYPES.ALERT, payload: {} });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const filterProfiles = (value) => async (dispatch) => {
+  try {
+    const res = await getDataAPI(`all-profiles?filter=${value}`);
+    dispatch({
+      type: PROFILE_TYPES.GET_PROFILES,
+      payload: { data: res.data.result.profiles, count: res.data.result.count },
+    });
+  } catch (error) {}
+};
