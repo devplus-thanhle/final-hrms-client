@@ -2,56 +2,51 @@ import { Progress } from "antd";
 
 const ProgressProfile = ({ record }) => {
   switch (record) {
-    case "new":
+    case "cvnew":
       return (
         <Progress
           type="circle"
           width={35}
           strokeWidth={15}
           strokeLinecap="square"
-          showInfo={false}
           percent={0}
+        />
+      );
+    case "phone":
+      return (
+        <Progress
+          type="circle"
+          percent={20}
+          width={35}
+          strokeWidth={15}
+          strokeLinecap="square"
         />
       );
     case "test":
       return (
         <Progress
           type="circle"
-          percent={30}
+          percent={50}
           width={35}
           strokeWidth={15}
           strokeLinecap="square"
-          showInfo={false}
         />
       );
     case "interview":
       return (
         <Progress
           type="circle"
-          percent={60}
+          percent={80}
           width={35}
           strokeWidth={15}
           strokeLinecap="square"
-          showInfo={false}
         />
       );
-    case "confirm":
+    case "offer":
       return (
         <Progress
           type="circle"
           percent={100}
-          width={35}
-          strokeWidth={15}
-          strokeLinecap="square"
-          status="success"
-        />
-      );
-    case "reject":
-      return (
-        <Progress
-          type="circle"
-          percent={100}
-          status="exception"
           width={35}
           strokeWidth={15}
           strokeLinecap="square"

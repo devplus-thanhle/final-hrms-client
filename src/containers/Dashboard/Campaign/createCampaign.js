@@ -51,10 +51,11 @@ const CreateCampaign = () => {
     data.append("startDate", startDate);
     data.append("endDate", endDate);
     data.append("quantity", values.Quantity);
-    data.append("position", values.Position);
+    // data.append("position", values.Position);
     data.append("technology", values.Technology);
+    data.append("position", values.Position);
 
-    values.Technology.forEach((technology) => console.log(technology));
+    // values.Technology.forEach((technology) => console.log(technology));
 
     dispatch(createCampaign(data));
   };
@@ -130,18 +131,55 @@ const CreateCampaign = () => {
                 </Upload.Dragger>
               </Form.Item>
             </Form.Item>
-            <Form.Item name="rangeTimePicker" label="Date" {...rangeConfig}>
-              <RangePicker showTime format="YYYY-MM-DD HH:mm" />
+            <Form.Item
+              name="rangeTimePicker"
+              label="Date"
+              {...rangeConfig}
+              rules={[
+                { required: true, message: "Please input your Date Time" },
+              ]}
+            >
+              <RangePicker
+                showTime
+                format="YYYY-MM-DD HH:mm"
+                style={{ width: "100%" }}
+              />
             </Form.Item>
             <Form.Item
-              label="Position"
               name="Position"
-              rules={[{ required: true, message: "Please input your Name!" }]}
+              label="Position"
+              rules={[
+                { required: true, message: "Please check your Position!" },
+              ]}
             >
-              <Input />
+              <Checkbox.Group>
+                <Row>
+                  <Col span={8}>
+                    <Checkbox value="Intern" style={{ margin: "0px 10px" }}>
+                      Intern
+                    </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="Fresher" style={{ margin: "0px 10px" }}>
+                      Fresher
+                    </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="Junior" style={{ margin: "0px 10px" }}>
+                      Junior
+                    </Checkbox>
+                  </Col>
+                </Row>
+              </Checkbox.Group>
             </Form.Item>
 
-            <Form.Item name="Technology" label="Technology">
+            <Form.Item
+              name="Technology"
+              label="Technology"
+              rules={[
+                { required: true, message: "Please check your Technology!" },
+              ]}
+            >
               <Checkbox.Group>
                 <Row>
                   <Col span={8}>
@@ -170,7 +208,7 @@ const CreateCampaign = () => {
                 { required: true, message: "Please input your Quantity!" },
               ]}
             >
-              <InputNumber />
+              <InputNumber min={1} />
             </Form.Item>
             <Form.Item
               label="Address"
