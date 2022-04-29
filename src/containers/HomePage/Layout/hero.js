@@ -20,16 +20,15 @@ function AppHero(){
                        <h3>{item.title}</h3>
                        <p> {item.content}</p>
                        <div className='btnHolder'>
-                       <Button type="primary" href="http://localhost:3000/campaign" size='large'>Apply now!</Button>
+                       <Button type="primary" href="/campaigns" size='large'>Apply now!</Button>
                        </div>
                     </div>
                 </div>
             )
         })}
-    
   </Carousel>,
    </div>
  );
 }
-
+ 
 export default AppHero;
