@@ -19,7 +19,7 @@ function AppHeader() {
     <div className="container-fluid">
       <div className="header">
         <div className="logo">
-          <a href="http://localhost:3000/dashboard">
+          <a href="/dashboard">
             <img
               border="0"
               alt="logo"
