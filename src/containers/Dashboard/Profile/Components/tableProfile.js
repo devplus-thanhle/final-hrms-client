@@ -6,8 +6,9 @@ import SelectStep from "./selectStep";
 import ProgressProfile from "./progress";
 import { getCampaign } from "../../../../shared/actions/campaignAction";
 import SelectStatus from "./selectStatus";
+import { getProfiles } from "../../../../shared/actions/profileAction";
 
-const ProfileTable = ({ profiles, count, navigate, page }) => {
+const ProfileTable = ({ profiles, navigate, page, total }) => {
   const { loading } = useSelector((state) => state.profiles);
   const dispatch = useDispatch();
 
@@ -43,7 +44,7 @@ const ProfileTable = ({ profiles, count, navigate, page }) => {
     },
     {
       title: "Progress",
-      dataIndex: "step",
+      // dataIndex: "step",
       key: "step",
       align: "center",
       render: (record) => <ProgressProfile record={record} />,
@@ -86,10 +87,10 @@ const ProfileTable = ({ profiles, count, navigate, page }) => {
           scroll={{ x: "700px" }}
           pagination={{
             pageSize: 5,
-            total: count,
+            total: total,
             current: page,
             onChange: (num) => {
-              dispatch(getCampaign(num));
+              dispatch(getProfiles(num));
               navigate(`/dashboard/profile/?page=${num}`);
             },
           }}

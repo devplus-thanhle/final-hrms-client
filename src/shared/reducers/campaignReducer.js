@@ -16,7 +16,7 @@ const campaignReducer = (state = initialState, action) => {
     case CAMPAIGN_TYPES.GET_CAMPAIGN:
       return {
         campaigns: action.payload.data,
-        count: action.payload.count,
+        total: action.payload.total,
       };
 
     default:

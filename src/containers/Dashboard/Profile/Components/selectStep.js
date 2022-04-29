@@ -1,21 +1,10 @@
-import {
-  Button,
-  Divider,
-  Modal,
-  DatePicker,
-  TimePicker,
-  Input,
-  Typography,
-  Space,
-} from "antd";
+import { Button, Divider, Modal, DatePicker, TimePicker } from "antd";
 import React, { useState } from "react";
 import { Select } from "antd";
 import { useDispatch } from "react-redux";
 import { changeStepSingle } from "../../../../shared/actions/profileAction";
 
 const { Option } = Select;
-const { Text } = Typography;
-const { TextArea } = Input;
 
 const SelectStep = ({ record }) => {
   const dispatch = useDispatch();
@@ -23,8 +12,7 @@ const SelectStep = ({ record }) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [idProfile, setIdProfile] = useState("");
-  const [reject, setReject] = useState(false);
-  const [valueReject, setValueReject] = useState("");
+
   const [status, setStatus] = useState("");
   const onChangeValue = async (e, id) => {
     setIdProfile(id);
@@ -51,7 +39,6 @@ const SelectStep = ({ record }) => {
   };
 
   const showModal = () => {
-    setReject(false);
     setIsModalVisible(true);
   };
 
