@@ -97,7 +97,7 @@ const Campaign = () => {
   const dispatch = useDispatch();
   const { search } = useLocation();
   const navigate = useNavigate();
-  const { campaigns, count, loading } = useSelector((state) => state.campaigns);
+  const { campaigns, total, loading } = useSelector((state) => state.campaigns);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -125,7 +125,7 @@ const Campaign = () => {
           scroll={{ x: "700px" }}
           pagination={{
             pageSize: 5,
-            total: count,
+            total: total,
             current: page,
             onChange: (num) => {
               dispatch(getCampaign(num));

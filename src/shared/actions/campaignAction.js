@@ -14,7 +14,7 @@ export const getCampaign = (page) => async (dispatch) => {
       type: CAMPAIGN_TYPES.GET_CAMPAIGN,
       payload: {
         data: res.data.result.campaigns,
-        count: res.data.result.count,
+        total: res.data.result.total,
       },
     });
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });

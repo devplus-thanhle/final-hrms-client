@@ -13,9 +13,14 @@ export const getProfiles = (page) => async (dispatch) => {
   try {
     dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
     const res = await getDataAPI(`all-profiles?page=${page}`);
+    console.log(res);
     dispatch({
       type: PROFILE_TYPES.GET_PROFILES,
-      payload: { data: res.data.result.profiles, count: res.data.result.count },
+      payload: {
+        data: res.data.result.profiles,
+        total: res.data.result.total,
+        page: res.data.result.page,
+      },
     });
     dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
   } catch (error) {
@@ -105,12 +110,21 @@ export const changeStatus =
     }
   };
 
-export const filterProfiles = (value) => async (dispatch) => {
-  try {
-    const res = await getDataAPI(`all-profiles?filter=${value}`);
-    dispatch({
-      type: PROFILE_TYPES.GET_PROFILES,
-      payload: { data: res.data.result.profiles, count: res.data.result.count },
-    });
-  } catch (error) {}
-};
+export const filterProfiles =
+  ({ step, status, page, value }) =>
+  async (dispatch) => {
+    try {
+      const search = value ? `&search=${value}` : "";
+      const res = await getDataAPI(
+        `all-profiles?${search}&page=${page}&step=${step}&status=${status}`
+      );
+      console.log(res);
+      dispatch({
+        type: PROFILE_TYPES.GET_PROFILES,
+        payload: {
+          data: res.data.result.profiles,
+          total: res.data.result.total,
+        },
+      });
+    } catch (error) {}
+  };

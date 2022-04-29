@@ -1,7 +1,7 @@
 import { Progress } from "antd";
 
 const ProgressProfile = ({ record }) => {
-  switch (record) {
+  switch (record.step) {
     case "cvnew":
       return (
         <Progress
@@ -10,6 +10,7 @@ const ProgressProfile = ({ record }) => {
           strokeWidth={15}
           strokeLinecap="square"
           percent={0}
+          strokeColor={record.status === "reject" ? "#ff0000" : "#00ff00"}
         />
       );
     case "phone":
@@ -20,6 +21,7 @@ const ProgressProfile = ({ record }) => {
           width={35}
           strokeWidth={15}
           strokeLinecap="square"
+          strokeColor={record.status === "reject" ? "#ff0000" : "#00ff00"}
         />
       );
     case "test":
@@ -30,6 +32,7 @@ const ProgressProfile = ({ record }) => {
           width={35}
           strokeWidth={15}
           strokeLinecap="square"
+          strokeColor={record.status === "reject" ? "#ff0000" : "#00ff00"}
         />
       );
     case "interview":
@@ -40,6 +43,7 @@ const ProgressProfile = ({ record }) => {
           width={35}
           strokeWidth={15}
           strokeLinecap="square"
+          strokeColor={record.status === "reject" ? "#ff0000" : "#00ff00"}
         />
       );
     case "offer":
