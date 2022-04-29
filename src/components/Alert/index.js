@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 const Alert = () => {
   const { alert } = useSelector((state) => state);
+
   return (
     <>
       {alert.error &&

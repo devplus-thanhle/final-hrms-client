@@ -3,7 +3,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getProfileByCampaign } from "../../../shared/actions/profileAction";
+import ProgressProfile from "./Components/progress";
 import SelectStatus from "./Components/selectStatus";
+import SelectStep from "./Components/selectStep";
 
 const columns = [
   {
@@ -29,6 +31,17 @@ const columns = [
     title: "Phone",
     dataIndex: "phone",
     key: "phone",
+  },
+  {
+    title: "Progress",
+    key: "step",
+    align: "center",
+    render: (record) => <ProgressProfile record={record} />,
+  },
+  {
+    title: "Step",
+    key: "status",
+    render: (record) => <SelectStep record={record} />,
   },
   {
     title: "Status",

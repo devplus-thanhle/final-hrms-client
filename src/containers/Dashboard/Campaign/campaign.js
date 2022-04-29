@@ -14,7 +14,12 @@ const columns = [
     title: "Position",
     dataIndex: "position",
     key: "position",
-    render: (text) => <Tag color="blue">{text}</Tag>,
+    render: (text) =>
+      text.map((item, index) => (
+        <Tag key={index} color="blue">
+          {item}
+        </Tag>
+      )),
   },
   {
     title: "Quantity",
@@ -27,19 +32,31 @@ const columns = [
     dataIndex: "technology",
     key: "technology",
     render: (technology) =>
-      technology.map((tech) => <Tag color="orange">{tech}</Tag>),
+      technology.map((tech, index) => (
+        <Tag key={index} color="orange">
+          {tech}
+        </Tag>
+      )),
   },
   {
     title: "Start Day",
     dataIndex: "startDate",
     key: "startDate",
-    render: (record) => <React.Fragment>{record.slice(0, 10)}</React.Fragment>,
+    render: (record) => (
+      <React.Fragment>
+        {new Date(record.slice(0, 10)).toLocaleDateString()}
+      </React.Fragment>
+    ),
   },
   {
     title: "End Day",
     dataIndex: "endDate",
     key: "endDate",
-    render: (record) => <React.Fragment>{record.slice(0, 10)}</React.Fragment>,
+    render: (record) => (
+      <React.Fragment>
+        {new Date(record.slice(0, 10)).toLocaleDateString()}
+      </React.Fragment>
+    ),
   },
   {
     title: "Status",
@@ -80,7 +97,7 @@ const Campaign = () => {
   const dispatch = useDispatch();
   const { search } = useLocation();
   const navigate = useNavigate();
-  const { campaigns, count, loading } = useSelector((state) => state.campaigns);
+  const { campaigns, total, loading } = useSelector((state) => state.campaigns);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -108,7 +125,7 @@ const Campaign = () => {
           scroll={{ x: "700px" }}
           pagination={{
             pageSize: 5,
-            total: count,
+            total: total,
             current: page,
             onChange: (num) => {
               dispatch(getCampaign(num));

@@ -1,12 +1,16 @@
 import { Button, Divider, Table, Avatar, Image, Spin } from "antd";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import SelectStatus from "./selectStatus";
+import SelectStep from "./selectStep";
 import ProgressProfile from "./progress";
+import { getCampaign } from "../../../../shared/actions/campaignAction";
+import SelectStatus from "./selectStatus";
+import { getProfiles } from "../../../../shared/actions/profileAction";
 
-const ProfileTable = ({ profiles }) => {
+const ProfileTable = ({ profiles, navigate, page, total }) => {
   const { loading } = useSelector((state) => state.profiles);
+  const dispatch = useDispatch();
 
   const columns = [
     {
@@ -40,10 +44,15 @@ const ProfileTable = ({ profiles }) => {
     },
     {
       title: "Progress",
-      dataIndex: "status",
-      key: "status",
+      // dataIndex: "step",
+      key: "step",
       align: "center",
       render: (record) => <ProgressProfile record={record} />,
+    },
+    {
+      title: "Step",
+      key: "step",
+      render: (record) => <SelectStep record={record} />,
     },
     {
       title: "Status",
@@ -76,7 +85,16 @@ const ProfileTable = ({ profiles }) => {
           dataSource={profiles}
           size={"middle"}
           scroll={{ x: "700px" }}
-        ></Table>
+          pagination={{
+            pageSize: 5,
+            total: total,
+            current: page,
+            onChange: (num) => {
+              dispatch(getProfiles(num));
+              navigate(`/dashboard/profile/?page=${num}`);
+            },
+          }}
+        />
       </Spin>
     </>
   );

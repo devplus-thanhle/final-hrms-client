@@ -1,6 +1,7 @@
 export const GLOBALTYPES = {
   ALERT: "ALERT",
   LOADING: "LOADING",
+  ERROR: "ERROR",
 };
 
 export const EditData = (data, id, post) => {

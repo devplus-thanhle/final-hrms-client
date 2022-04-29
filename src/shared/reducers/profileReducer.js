@@ -19,7 +19,8 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         profiles: action.payload.data,
-        count: action.payload.count,
+        total: action.payload.total,
+        page: action.payload.page,
       };
     case PROFILE_TYPES.GET_PROFILE:
       return {
