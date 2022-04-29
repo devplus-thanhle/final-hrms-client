@@ -1,4 +1,4 @@
-import { getDataAPI, patchDataAPI } from "../../service/BaseApi";
+import { getDataAPI, patchDataAPI ,postDataAPI } from "../../service/BaseApi";
 import { GLOBALTYPES } from "./globalTypes";
 
 export const PROFILE_TYPES = {
@@ -8,7 +8,16 @@ export const PROFILE_TYPES = {
   UPDATE_PROFILE: "UPDATE_PROFILE",
   LOADING: "LOADING",
 };
-
+export const createProfile = (data, id) => async (dispatch) => {
+  console.log("____",data);
+  try {
+    const res = await postDataAPI("create-profile", data);
+    console.log(res)
+    
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const getProfiles = () => async (dispatch) => {
   try {
     dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
