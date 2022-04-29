@@ -19,7 +19,7 @@ function AppHeader() {
     <div className="container-fluid">
       <div className="header">
         <div className="logo">
-          <a href="/dashboard">
+          <a href="/">
             <img
               border="0"
               alt="logo"

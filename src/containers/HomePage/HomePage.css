@@ -204,7 +204,7 @@ hero
   background: url('https://stunited.vn/wp-content/uploads/2019/08/1566375726229.jpeg') no-repeat;
   background-position: 50% 100%;
   background-size: cover;
-  height: 125vh;
+  height: 100vh;
 }
 
 .heroBlock .container-fluid {
@@ -302,6 +302,64 @@ footer
 
 .mobileHidden {
   display: block;
+}
+
+
+/* 
+comingsoon
+---- 
+*/
+.comingsoonBlock {
+  background: url('https://images.unsplash.com/photo-1481151500463-1fa2dd2d5dbe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8ZGFyayUyMG9mZmljZXxlbnwwfHwwfHw%3D&w=1000&q=80') no-repeat;
+  background-position: 50% 100%;
+  background-size: cover;
+  height: 100vh;
+}
+
+.comingsoonBlock .container-fluid {
+  display: block !important;
+}
+
+.comingsoonBlock .ant-carousel,
+.comingsoonBlock .ant-carousel div {
+  height: 100%;
+}
+
+.comingsoonBlock .slick-dots li button {
+  background: #000 !important;
+}
+
+.comingsoonBlock .slick-dots li.slick-active button {
+  background: #1890ff !important;
+}
+
+.comingsoonBlock .content {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 0 70px;
+}
+
+.comingsoonBlock h3 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin: 0 0 30px;
+  color: white;
+}
+
+.comingsoonBlock p {
+  margin: 0 0 30px;
+  color: white;
+}
+
+.comingsoonBlock .btnHolder {
+  height: auto !important;
+}
+
+.comingsoonBlock .btnHolder button,
+.comingsoonBlock .btnHolder .fas {
+  margin: 0 10px 0 0;
 }
 
 /* 

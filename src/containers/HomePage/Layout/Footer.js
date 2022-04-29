@@ -88,17 +88,17 @@ function AppFooter() {
                   <Space direction='vertical'>
                      <Button
                         type="text"
-                        href='/'
+                        href='/comingsoon'
                         style={{ display: 'block', width: '120px' }}
                      >
-                        Privacy Policy
+                      Privacy Policy
                      </Button>
                      <Button
                         type="text"
-                        href='/'
+                        href='/comingsoon'
                         style={{ display: 'block', width: '120px' }}
                      >
-                        Term of Service
+                      Term of Service
                      </Button>
                   </Space>
                </Col>
