@@ -132,6 +132,7 @@ const Campaign = () => {
               navigate(`/dashboard/campaign/?page=${num}`);
             },
           }}
+          
         ></Table>
       </Spin>
     </>
