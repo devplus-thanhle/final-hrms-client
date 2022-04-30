@@ -8,7 +8,6 @@ export const PROFILE_TYPES = {
   UPDATE_PROFILE: "UPDATE_PROFILE",
   LOADING: "LOADING",
 };
-<<<<<<< HEAD
 export const createProfile = (data, id) => async (dispatch) => {
   console.log("____",data);
   try {
@@ -19,11 +18,7 @@ export const createProfile = (data, id) => async (dispatch) => {
     console.log(error);
   }
 };
-export const getProfiles = () => async (dispatch) => {
-=======
-
 export const getProfiles = (page) => async (dispatch) => {
->>>>>>> 90bb910ce2256241567361e1b09e3f0dabb6fa5a
   try {
     dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
     const res = await getDataAPI(`all-profiles?page=${page}`);

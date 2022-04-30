@@ -1,13 +1,13 @@
 import React from "react";
 import { Layout, Menu, Breadcrumb} from "antd";
 import RootRouter from "./Router";
-import "./index.css";
+import "./campaignActive.css";
 import { Link } from "react-router-dom";
 const { Header, Content, Footer } = Layout;
 export default function index() {
   return (
     <>
-      <header>
+      <header className="header-campaign">
         <div className="overlay">
           <Link to ={`/`}>
           <img src="https://devplus.asia/assets/images/devplus/Artboard_2.png"></img>
