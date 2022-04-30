@@ -25,20 +25,22 @@ export default function Campaign() {
   }, [dispatch, page]);
   return (
     <div className="campaign-container">
-      <div className="search">
+       <Row justify="center" >
+       <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 8 }} span={5} className="cards_item" style={{ width: "20%" }}>
         <Search
-          placeholder="input search text"
+          placeholder="Search Campaign"
           allowClear
           enterButton="Search"
           size="large"
           onSearch={onSearch}
         />
-      </div>
+      </Col>
+      </Row>
       <>
-        <Row justify="center">
+        <Row justify="center" >
           {campaigns.map((campaign) => (
-            <Col span={5} className="cards_item" style={{ width: "20%" }}>
-              <div className="card">
+            <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 8 }} span={5} className="cards_item" >
+              <Card>
                 <div className="card_image">
                   <img
                     src={campaign.image}
@@ -48,7 +50,7 @@ export default function Campaign() {
                 <div className="card_content">
                   
                   <h2 className="card_title">{campaign.title}</h2>
-                  <p className="card_text" style={{ height: "35px" }}>
+                  <p className="card_text" style={{ height: "auto" }}>
                     Technologies :   
                     {campaign.technology.map((tl) => (
                       <Tag
@@ -83,13 +85,12 @@ export default function Campaign() {
                     <button className="btn card_btn">View Detail</button>
                   </Link> */}
                 </div>
-              </div>
+              </Card>
             </Col>
           ))}
         </Row>
       </>
-
-      <div style={{ width: "30%", float: "right", padding: 50 }}>
+       <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 8 }} span={5}> 
         <Pagination
           defaultCurrent={1}
           pageSize = {8}
@@ -100,7 +101,7 @@ export default function Campaign() {
             navigate(`/campaigns/?page=${num}`);
           }}
         />
-      </div>
+      </Col> 
     </div>
   );
 }

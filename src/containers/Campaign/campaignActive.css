@@ -1,11 +1,11 @@
 *{padding: 0; margin: 0; box-sizing: border-box;}
 body{height: 900px;}
-header {
+.header-campaign {
 	background: #333;
-	text-align: center;
 	width: 100%;
 	height: auto;
 	background-size: cover;
+	text-align: center;
 	background-attachment: fixed;
 	position: relative;
 	overflow: hidden;
