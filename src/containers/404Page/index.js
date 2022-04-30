@@ -18,8 +18,7 @@ const NotFound = () => {
         <img
           src="https://res.cloudinary.com/dp5ku4grg/image/upload/v1650879327/404_Error_Page_not_Found_with_people_connecting_a_plug-bro_q1xl9e.png"
           alt=""
-          width="50%"
-          height="70%"
+          style={{ width: "50%", height: "50%" }}
         />
       </div>
       <Divider style={{ padding: 0, margin: 0 }}>

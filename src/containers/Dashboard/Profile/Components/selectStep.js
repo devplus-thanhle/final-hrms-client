@@ -2,7 +2,10 @@ import { Button, Divider, Modal, DatePicker, TimePicker } from "antd";
 import React, { useState } from "react";
 import { Select } from "antd";
 import { useDispatch } from "react-redux";
-import { changeStepSingle } from "../../../../shared/actions/profileAction";
+import {
+  changeStatus,
+  changeStepSingle,
+} from "../../../../shared/actions/profileAction";
 
 const { Option } = Select;
 
@@ -18,20 +21,31 @@ const SelectStep = ({ record }) => {
     setIdProfile(id);
     setStatus(e);
     switch (e) {
-      case "cvnew":
+      case "new":
         await dispatch(changeStepSingle({ id, e }));
-        break;
-      case "interview":
-        showModal();
-        break;
-      case "phone":
-        await dispatch(changeStepSingle({ id, e }));
+        await dispatch(changeStatus({ id, e: "processing" }));
         break;
       case "test":
         showModal();
         break;
-      case "offer":
+      case "interview":
+        showModal();
+        break;
+      case "consider":
         await dispatch(changeStepSingle({ id, e }));
+        await dispatch(changeStatus({ id, e: "processing" }));
+        break;
+      case "confirm":
+        await dispatch(changeStepSingle({ id, e }));
+        await dispatch(changeStatus({ id, e: "processing" }));
+        break;
+      case "reject":
+        await dispatch(changeStepSingle({ id, e }));
+        await dispatch(changeStatus({ id, e: "failed" }));
+        break;
+      case "employee":
+        await dispatch(changeStepSingle({ id, e }));
+        await dispatch(changeStatus({ id, e: "passed" }));
         break;
       default:
         break;
@@ -44,6 +58,7 @@ const SelectStep = ({ record }) => {
 
   const handleOk = () => {
     dispatch(changeStepSingle({ id: idProfile, e: status, date, time }));
+    dispatch(changeStatus({ id: idProfile, e: "processing" }));
     setIsModalVisible(false);
   };
 
@@ -60,11 +75,13 @@ const SelectStep = ({ record }) => {
         }}
         style={{ width: 100, height: "fit-content" }}
       >
-        <Option value="cvnew">CV NEW</Option>
-        <Option value="phone">PHONE</Option>
+        <Option value="new">NEW</Option>
         <Option value="test">TEST</Option>
         <Option value="interview">INTERVIEW</Option>
-        <Option value="offer">OFFER</Option>
+        <Option value="confirm">CONFIRM</Option>
+        <Option value="consider">CONSIDER</Option>
+        <Option value="employee">EMPLOYEE</Option>
+        <Option value="reject">REJECT</Option>
       </Select>
       <Modal
         title="Enter information"

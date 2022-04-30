@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCampaign } from "../../../shared/actions/campaignAction";
-import { Table, Tag, Button, Divider, Space, Spin } from "antd";
+import { Table, Tag, Button, Divider, Space, Spin, Typography } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const columns = [
   {
@@ -11,15 +12,42 @@ const columns = [
     key: "title",
   },
   {
+    title: "Address",
+    dataIndex: "address",
+    key: "address",
+  },
+  {
     title: "Position",
     dataIndex: "position",
     key: "position",
-    render: (text) =>
-      text.map((item, index) => (
-        <Tag key={index} color="blue">
-          {item}
-        </Tag>
-      )),
+    render: (text) => <Tag color="blue">{text}</Tag>,
+    filters: [
+      {
+        text: "Intern",
+        value: "Intern",
+      },
+      {
+        text: "Junior",
+        value: "Junior",
+      },
+      {
+        text: "Senior",
+        value: "Senior",
+      },
+      {
+        text: "Fresher",
+        value: "Fresher",
+      },
+      {
+        text: "Middle",
+        value: "Middle",
+      },
+      {
+        text: "HR",
+        value: "HR",
+      },
+    ],
+    onFilter: (value, record) => record.position.indexOf(value) === 0,
   },
   {
     title: "Quantity",
@@ -44,9 +72,10 @@ const columns = [
     key: "startDate",
     render: (record) => (
       <React.Fragment>
-        {new Date(record.slice(0, 10)).toLocaleDateString()}
+        {new Date(record).toLocaleDateString("vi-GB")}
       </React.Fragment>
     ),
+    sorter: (a, b) => new Date(a.startDate) - new Date(b.startDate),
   },
   {
     title: "End Day",
@@ -54,9 +83,10 @@ const columns = [
     key: "endDate",
     render: (record) => (
       <React.Fragment>
-        {new Date(record.slice(0, 10)).toLocaleDateString()}
+        {new Date(record).toLocaleDateString("vi-GB")}
       </React.Fragment>
     ),
+    sorter: (a, b) => moment(a.endDate).unix() - moment(b.endDate).unix(),
   },
   {
     title: "Status",
@@ -109,11 +139,17 @@ const Campaign = () => {
     dispatch(getCampaign(page));
   }, [dispatch, page]);
 
+  useEffect(() => {
+    const today = new Date().toLocaleDateString("vi-GB");
+    console.log(today);
+  });
+
   return (
     <>
       <Spin spinning={loading}>
-        <Divider>
-          <Button style={{ textAlign: "left" }} type="primary">
+        <Typography.Title level={4}>Campaigns</Typography.Title>
+        <Divider orientation="right" orientationMargin={10}>
+          <Button type="primary">
             <Link to="/dashboard/campaign/create">Create Campaign</Link>
           </Button>
         </Divider>

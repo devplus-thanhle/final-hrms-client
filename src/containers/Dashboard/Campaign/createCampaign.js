@@ -7,16 +7,18 @@ import {
   InputNumber,
   Upload,
   Typography,
-  Checkbox,
-  Row,
-  Col,
   Spin,
+  Select,
+  Space,
 } from "antd";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { InboxOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { createCampaign } from "../../../shared/actions/campaignAction";
+import { useNavigate } from "react-router-dom";
+
+const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
 
@@ -25,6 +27,7 @@ const CreateCampaign = () => {
   const { loading } = useSelector((state) => state.campaigns);
   const [text, setText] = useState("");
   const [fileList, setFileList] = useState("");
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onFormLayoutChange = ({ size }) => {
@@ -39,25 +42,22 @@ const CreateCampaign = () => {
       },
     ],
   };
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     let startDate = new Date(values.rangeTimePicker[0]).toLocaleDateString();
     let endDate = new Date(values.rangeTimePicker[1]).toLocaleDateString();
-
     const data = new FormData();
-    data.append("recfile", fileList);
+    data.append("recfile", imageUrl);
     data.append("title", values.Name);
     data.append("description", text);
     data.append("address", values.Address);
     data.append("startDate", startDate);
     data.append("endDate", endDate);
     data.append("quantity", values.Quantity);
-    // data.append("position", values.Position);
     data.append("technology", values.Technology);
     data.append("position", values.Position);
 
-    // values.Technology.forEach((technology) => console.log(technology));
-
-    dispatch(createCampaign(data));
+    await dispatch(createCampaign(data));
+    navigate("/dashboard/campaign");
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -71,6 +71,19 @@ const CreateCampaign = () => {
     const file = e.file;
 
     setFileList(file);
+  };
+  const [imageUrl, setImageUrl] = useState("");
+  const getBase64 = (img, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => callback(reader.result));
+    reader.readAsDataURL(img);
+  };
+
+  const onChanges = (info) => {
+    let inforImage = info.file.originFileObj;
+    getBase64(inforImage, (imageUrl) => {
+      setImageUrl(imageUrl);
+    });
   };
 
   return (
@@ -93,6 +106,7 @@ const CreateCampaign = () => {
             layout="horizontal"
             initialValues={{
               size: componentSize,
+              Address: "368 Trần Hưng Đạo - Đà Nẵng",
             }}
             onValuesChange={onFormLayoutChange}
             size={componentSize}
@@ -106,30 +120,23 @@ const CreateCampaign = () => {
             >
               <Input />
             </Form.Item>
-            <Form.Item label="Image">
-              <Form.Item
-                name="dragger"
-                valuePropName="fileList"
-                getValueFromEvent={normFile}
-                noStyle
+
+            <Form.Item
+              label="Image"
+              name="dragger"
+              valuePropName="fileList"
+              getValueFromEvent={normFile}
+              required={true}
+            >
+              <Upload
+                name="recfile"
+                listType="picture-card"
+                beforeUpload={false}
+                showUploadList={false}
+                onChange={onChanges}
               >
-                <Upload.Dragger
-                  name="recfile"
-                  listType="picture"
-                  maxCount={1}
-                  beforeUpload={() => false}
-                >
-                  <p className="ant-upload-drag-icon">
-                    <InboxOutlined />
-                  </p>
-                  <p className="ant-upload-text">
-                    Click or drag file to this area to upload
-                  </p>
-                  <p className="ant-upload-hint">
-                    Support for a single upload.
-                  </p>
-                </Upload.Dragger>
-              </Form.Item>
+                {fileList ? <img src={imageUrl} alt="" /> : <InboxOutlined />}
+              </Upload>
             </Form.Item>
             <Form.Item
               name="rangeTimePicker"
@@ -141,7 +148,7 @@ const CreateCampaign = () => {
             >
               <RangePicker
                 showTime
-                format="YYYY-MM-DD HH:mm"
+                format="DD-MM-YYYY HH:mm"
                 style={{ width: "100%" }}
               />
             </Form.Item>
@@ -152,25 +159,14 @@ const CreateCampaign = () => {
                 { required: true, message: "Please check your Position!" },
               ]}
             >
-              <Checkbox.Group>
-                <Row>
-                  <Col span={8}>
-                    <Checkbox value="Intern" style={{ margin: "0px 10px" }}>
-                      Intern
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="Fresher" style={{ margin: "0px 10px" }}>
-                      Fresher
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="Junior" style={{ margin: "0px 10px" }}>
-                      Junior
-                    </Checkbox>
-                  </Col>
-                </Row>
-              </Checkbox.Group>
+              <Select placeholder="Position">
+                <Option value="intern">Intern</Option>
+                <Option value="fresher">Fresher</Option>
+                <Option value="middle">Middle</Option>
+                <Option value="junior">Junior</Option>
+                <Option value="senior">Senior</Option>
+                <Option value="hr">HR</Option>
+              </Select>
             </Form.Item>
 
             <Form.Item
@@ -180,25 +176,16 @@ const CreateCampaign = () => {
                 { required: true, message: "Please check your Technology!" },
               ]}
             >
-              <Checkbox.Group>
-                <Row>
-                  <Col span={8}>
-                    <Checkbox value="ReactJs" style={{ margin: "0px 10px" }}>
-                      ReactJS
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="NodeJs" style={{ margin: "0px 10px" }}>
-                      NodeJs
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="Php" style={{ margin: "0px 10px" }}>
-                      PHP
-                    </Checkbox>
-                  </Col>
-                </Row>
-              </Checkbox.Group>
+              <Select mode="tags" placeholder="Technology">
+                <Option value="reactjs">ReactJs</Option>
+                <Option value="vuejs">VueJs</Option>
+                <Option value="nodejs">NodeJs</Option>
+                <Option value="php">PHP</Option>
+                <Option value="java">Java</Option>
+                <Option value="python">Python</Option>
+                <Option value="blockchain">BlockChain</Option>
+                <Option value=".net">.Net</Option>
+              </Select>
             </Form.Item>
 
             <Form.Item
@@ -208,7 +195,11 @@ const CreateCampaign = () => {
                 { required: true, message: "Please input your Quantity!" },
               ]}
             >
-              <InputNumber min={1} />
+              <InputNumber
+                min={1}
+                placeholder="Quantity"
+                style={{ width: "100%" }}
+              />
             </Form.Item>
             <Form.Item
               label="Address"
@@ -217,7 +208,7 @@ const CreateCampaign = () => {
                 { required: true, message: "Please input your Address!" },
               ]}
             >
-              <Input />
+              <Input placeholder="Address" />
             </Form.Item>
             <Form.Item
               label="Description"
@@ -228,18 +219,20 @@ const CreateCampaign = () => {
             >
               <CKEditor
                 editor={ClassicEditor}
-                data="<p>What is your description!</p>"
+                config={{ placeholder: "Description" }}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   setText(data);
                 }}
               />
             </Form.Item>
-            <Form.Item>
-              <Button>Cancel</Button>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
+            <Form.Item style={{ justifyContent: "center", textAlign: "end" }}>
+              <Space>
+                <Button>Cancel</Button>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </Space>
             </Form.Item>
           </Form>
         </div>
