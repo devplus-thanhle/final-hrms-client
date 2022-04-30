@@ -38,9 +38,7 @@ const Profile = () => {
   const [page, setPage] = useState(1);
   const [step, setStep] = useState("");
   const [status, setStatus] = useState("");
-  const [searchText, setSearchText] = useState();
-
-  // console.log(searchText);
+  // const [searchText, setSearchText] = useState();
 
   const handleSubmit = (value) => {
     navigate({
@@ -56,14 +54,14 @@ const Profile = () => {
   }, [search]);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(search).get("search") || "";
-    setSearchText(searchParams);
+    const value = new URLSearchParams(search).get("search") || "";
+    // setSearchText(value);
     const step = new URLSearchParams(search).get("step") || "";
     setStep(step);
     const status = new URLSearchParams(search).get("status") || "";
     setStatus(status);
     if (search) {
-      dispatch(filterProfiles({ step, status, page, searchText }));
+      dispatch(filterProfiles({ step, status, page, value }));
     } else {
       dispatch(getProfiles(page));
     }
@@ -88,15 +86,13 @@ const Profile = () => {
               backgroundColor: "#f1f1f1",
               padding: "10px",
               borderRadius: "5px",
-              // display: "flex",
             }}
           >
             <Row gutter={[24, 24]}>
               <Col xs={24} md={12} xl={12}>
                 <Search
-                  placeholder="input search text"
+                  placeholder="Search Name Profile, Email"
                   onSearch={(value) => {
-                    setSearchText(value);
                     handleSubmit(value);
                   }}
                   style={{ width: "50%" }}
@@ -109,10 +105,7 @@ const Profile = () => {
               <Col xs={24} md={12} xl={12}>
                 <div
                   style={{
-                    // width: "70%",
                     textAlign: "end",
-                    // display: "flex",
-                    // justifyContent: "end",
                   }}
                 >
                   <Space>
@@ -165,11 +158,13 @@ const Profile = () => {
               value={step}
             >
               <Space direction="vertical">
-                <Radio value="cvnew">Cv New</Radio>
-                <Radio value="phone">Phone</Radio>
-                <Radio value="test">Test</Radio>
-                <Radio value="interview">Interview</Radio>
-                <Radio value="offer">Offer</Radio>
+                <Radio value="new">New</Radio>
+                <Radio value="test">TEST</Radio>
+                <Radio value="interview">INTERVIEW</Radio>
+                <Radio value="confirm">CONFIRM</Radio>
+                <Radio value="consider">CONSIDER</Radio>
+                <Radio value="employee">EMPLOYEE</Radio>
+                <Radio value="reject">REJECT</Radio>
               </Space>
             </Radio.Group>
             <Typography.Title level={5}>Status</Typography.Title>
@@ -180,9 +175,9 @@ const Profile = () => {
               value={status}
             >
               <Space direction="vertical">
-                <Radio value="pending">Pending</Radio>
-                <Radio value="passed">Passed</Radio>
-                <Radio value="reject">Reject</Radio>
+                <Radio value="processing">PROCESSING</Radio>
+                <Radio value="passed">PASSED</Radio>
+                <Radio value="failed">FAILED</Radio>
               </Space>
             </Radio.Group>
             <Divider />

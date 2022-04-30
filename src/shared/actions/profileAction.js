@@ -22,7 +22,6 @@ export const getProfiles = (page) => async (dispatch) => {
   try {
     dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
     const res = await getDataAPI(`all-profiles?page=${page}`);
-    console.log(res);
     dispatch({
       type: PROFILE_TYPES.GET_PROFILES,
       payload: {
@@ -55,7 +54,6 @@ export const getProfileByCampaign = (id) => async (dispatch) => {
   try {
     dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
     const res = await getDataAPI(`get-campaign/${id}`);
-    console.log(res);
     dispatch({
       type: PROFILE_TYPES.GET_PROFILE_CAMPAIGN,
       payload: {
@@ -82,28 +80,24 @@ export const changeStepSingle =
         type: PROFILE_TYPES.UPDATE_PROFILE,
         payload: ress.data.result,
       });
-      dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
-      dispatch({
-        type: GLOBALTYPES.ALERT,
-        payload: { success: ress.data.msg },
-      });
-      dispatch({ type: GLOBALTYPES.ALERT, payload: {} });
+      // dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
+      // dispatch({
+      //   type: GLOBALTYPES.ALERT,
+      //   payload: { success: ress.data.msg },
+      // });
+      // dispatch({ type: GLOBALTYPES.ALERT, payload: {} });
     } catch (error) {
       console.log(error);
     }
   };
 
 export const changeStatus =
-  ({ id, e, valueReject }) =>
+  ({ id, e }) =>
   async (dispatch) => {
-    console.log({ id, e });
     try {
-      dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
       const ress = await patchDataAPI(`change-status-profile/${id}`, {
         status: e,
-        reason: valueReject,
       });
-      console.log(ress);
       dispatch({
         type: PROFILE_TYPES.UPDATE_PROFILE,
         payload: ress.data.result,
@@ -111,7 +105,7 @@ export const changeStatus =
       dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { success: ress.data.msg },
+        payload: { success: "Set Step Profile Success" },
       });
       dispatch({ type: GLOBALTYPES.ALERT, payload: {} });
     } catch (error) {
@@ -122,6 +116,7 @@ export const changeStatus =
 export const filterProfiles =
   ({ step, status, page, value }) =>
   async (dispatch) => {
+    console.log(value);
     try {
       const search = value ? `&search=${value}` : "";
       const res = await getDataAPI(
