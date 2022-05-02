@@ -17,7 +17,7 @@ const ProfileTable = ({ profiles, navigate, page, total }) => {
       key: "avatar",
       render: (avatar) => (
         <Avatar
-          src={<Image src={avatar} style={{ width: "100%", height: 100 }} />}
+          src={<Image src={avatar} style={{ width: "100%", height: "100%" }} />}
         />
       ),
     },

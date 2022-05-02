@@ -1,19 +1,23 @@
 import React from "react";
-import { Layout, Menu, Breadcrumb} from "antd";
+import { Layout, Menu, Breadcrumb } from "antd";
 import RootRouter from "./Router";
 import "./campaignActive.css";
 import { Link } from "react-router-dom";
-const { Header, Content, Footer } = Layout;
+const { Content, Footer } = Layout;
 export default function index() {
   return (
     <>
       <header className="header-campaign">
         <div className="overlay">
-          <Link to ={`/`}>
-          <img src="https://devplus.asia/assets/images/devplus/Artboard_2.png"></img>
+          <Link to={`/`}>
+            <img
+              src="https://devplus.asia/assets/images/devplus/Artboard_2.png"
+              alt=""
+            ></img>
           </Link>
-          <h3 style={{color: "white"}}>WE DEVELOP | WE SUPPORT | WE IMPROVE</h3>
-        
+          <h3 style={{ color: "white" }}>
+            WE DEVELOP | WE SUPPORT | WE IMPROVE
+          </h3>
         </div>
       </header>
       <Layout className="layout">
