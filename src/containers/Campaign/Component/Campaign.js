@@ -81,9 +81,9 @@ export default function Campaign() {
                   <p className="card_text">
                     End Day : {campaign.endDate.slice(0, 10)}
                   </p>
-                  {/* <Link to={`/campaigns/detail/${campaign._id}`}>
+                  <Link to={`/campaigns/detail/${campaign._id}`}>
                     <button className="btn card_btn">View Detail</button>
-                  </Link> */}
+                  </Link>
                 </div>
               </Card>
             </Col>
