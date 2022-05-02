@@ -24,7 +24,7 @@ function AppHeader() {
               border="0"
               alt="logo"
               src="https://devplus.asia/assets/images/devplus/Artboard_2.png"
-              style={{ width: "35%" }}
+              style={{ width: "100%" }}
             ></img>
           </a>
         </div>

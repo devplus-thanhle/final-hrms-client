@@ -11,7 +11,7 @@ body{height: 900px;}
 	overflow: hidden;
 	border-radius: 0 0 85% 85% / 30%;
 }
-header .overlay{
+.overlay{
 	width: 100%;
 	height: 100%;
 	padding: 50px;
@@ -21,18 +21,18 @@ header .overlay{
 	
 }
 
-h1 {
+/* h1 {
 	font-family: 'Dancing Script', cursive;
 	font-size: 80px;
 	margin-bottom: 30px;
-}
+} */
 
-h3, p {
+.h3_css {
 	font-family: 'Open Sans', sans-serif;
     margin-bottom: 30px;
 }
 
-button {
+/* button {
 	border: none;
 	outline: none;
 	padding: 10px 20px;
@@ -44,4 +44,4 @@ button {
 }
 button:hover{
 	cursor: pointer;
-}
+} */

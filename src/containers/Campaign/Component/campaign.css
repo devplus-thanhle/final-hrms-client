@@ -1,4 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
 
 
 *,
@@ -23,13 +23,13 @@ h1 {
     text-align: center;
 }
 
-img {
+.card_image {
   height: auto;
   max-width: 100%;
   vertical-align: middle;
 }
 
-.btn {
+/* .btn {
   color: #ffffff;
   padding: 0.8rem;
   font-size: 14px;
@@ -41,7 +41,7 @@ img {
   cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: transparent;
-}
+} */
 
 .btn:hover {
   background-color: rgba(255, 255, 255, 0.12);
@@ -108,8 +108,10 @@ img {
   margin-top: 35px;
   text-align: center;
 }
-
+.card_body{
+  border-radius: 10px;
+}
 .search{
   width: 40%;
   margin: 10px auto;
-} */
+}
