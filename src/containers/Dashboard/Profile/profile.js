@@ -97,6 +97,7 @@ const Profile = () => {
                   }}
                   style={{ width: "50%" }}
                   enterButton
+                  allowClear
                 />
                 <Button onClick={handleReset} type="primary">
                   Reset

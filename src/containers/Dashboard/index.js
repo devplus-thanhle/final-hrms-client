@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Space } from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -7,7 +7,7 @@ import {
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import RootRouter from "./Router";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
@@ -31,15 +31,22 @@ const navigation = [
 
 const Dasboard = () => {
   const [open, setOpen] = useState(true);
+  const location = useLocation();
+  console.log(location);
 
   return (
     <div>
       <Layout style={{ height: "100vh" }}>
         <Sider trigger={null} collapsible collapsed={open} collapsedWidth="70">
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["0"]}>
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={["/"]}
+            selectedKeys={[location.pathname]}
+          >
             {navigation.map((item, index) => (
-              <Menu.Item key={index} icon={item.icon}>
+              <Menu.Item key={item.path} icon={item.icon}>
                 <Link to={item.path}>{item.name}</Link>
               </Menu.Item>
             ))}
