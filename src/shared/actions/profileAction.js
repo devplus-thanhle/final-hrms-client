@@ -1,4 +1,4 @@
-import { getDataAPI, patchDataAPI ,postDataAPI } from "../../service/BaseApi";
+import { getDataAPI, patchDataAPI, postDataAPI } from "../../service/BaseApi";
 import { GLOBALTYPES } from "./globalTypes";
 
 export const PROFILE_TYPES = {
@@ -9,11 +9,10 @@ export const PROFILE_TYPES = {
   LOADING: "LOADING",
 };
 export const createProfile = (data, id) => async (dispatch) => {
-  console.log("____",data);
+  console.log("____", data);
   try {
     const res = await postDataAPI("create-profile", data);
-    console.log(res)
-    
+    console.log(res);
   } catch (error) {
     console.log(error);
   }
@@ -66,26 +65,34 @@ export const getProfileByCampaign = (id) => async (dispatch) => {
 };
 
 export const changeStepSingle =
-  ({ id, e, date, time }) =>
+  ({ id, e, linkDateTime, valueStatus, valueReject, position }) =>
   async (dispatch) => {
     try {
       dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
 
       const ress = await patchDataAPI(`change-step-profile/${id}`, {
         step: e,
-        date,
-        time,
+        linkDateTime,
+        valueReject,
       });
       dispatch({
         type: PROFILE_TYPES.UPDATE_PROFILE,
         payload: ress.data.result,
       });
-      // dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
-      // dispatch({
-      //   type: GLOBALTYPES.ALERT,
-      //   payload: { success: ress.data.msg },
-      // });
-      // dispatch({ type: GLOBALTYPES.ALERT, payload: {} });
+      const res = await patchDataAPI(`change-status-profile/${id}`, {
+        status: valueStatus,
+        position: position,
+      });
+      dispatch({
+        type: PROFILE_TYPES.UPDATE_PROFILE,
+        payload: res.data.result,
+      });
+      dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
+      dispatch({
+        type: GLOBALTYPES.ALERT,
+        payload: { success: ress.data.msg },
+      });
+      dispatch({ type: GLOBALTYPES.ALERT, payload: {} });
     } catch (error) {
       console.log(error);
     }
@@ -95,6 +102,8 @@ export const changeStatus =
   ({ id, e }) =>
   async (dispatch) => {
     try {
+      dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
+
       const ress = await patchDataAPI(`change-status-profile/${id}`, {
         status: e,
       });
