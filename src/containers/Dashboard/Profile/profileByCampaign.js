@@ -1,10 +1,18 @@
-import { Avatar, Button, Divider, Image, Spin, Table, Typography } from "antd";
+import {
+  Avatar,
+  Button,
+  Divider,
+  Image,
+  Spin,
+  Table,
+  Tag,
+  Typography,
+} from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getProfileByCampaign } from "../../../shared/actions/profileAction";
 import ProgressProfile from "./Components/progress";
-import SelectStatus from "./Components/selectStatus";
 import SelectStep from "./Components/selectStep";
 
 const columns = [
@@ -45,8 +53,9 @@ const columns = [
   },
   {
     title: "Status",
+    dataIndex: "status",
     key: "status",
-    render: (record) => <SelectStatus record={record} />,
+    render: (record) => <Tag color="blue">{record}</Tag>,
   },
   {
     key: "action",

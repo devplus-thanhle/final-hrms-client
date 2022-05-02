@@ -1,11 +1,9 @@
-import { Button, Divider, Table, Avatar, Image, Spin } from "antd";
+import { Button, Divider, Table, Avatar, Image, Spin, Tag } from "antd";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import SelectStep from "./selectStep";
 import ProgressProfile from "./progress";
-import { getCampaign } from "../../../../shared/actions/campaignAction";
-import SelectStatus from "./selectStatus";
 import { getProfiles } from "../../../../shared/actions/profileAction";
 
 const ProfileTable = ({ profiles, navigate, page, total }) => {
@@ -18,7 +16,9 @@ const ProfileTable = ({ profiles, navigate, page, total }) => {
       dataIndex: "avatar",
       key: "avatar",
       render: (avatar) => (
-        <Avatar src={<Image src={avatar} style={{ width: 32 }} />} />
+        <Avatar
+          src={<Image src={avatar} style={{ width: "100%", height: "100%" }} />}
+        />
       ),
     },
     {
@@ -56,8 +56,21 @@ const ProfileTable = ({ profiles, navigate, page, total }) => {
     },
     {
       title: "Status",
+      dataIndex: "status",
       key: "status",
-      render: (record) => <SelectStatus record={record} />,
+      render: (record) => (
+        <Tag
+          color={
+            record === "failed"
+              ? "#ff0000"
+              : record === "passed"
+              ? "rgb(82 196 26)"
+              : "#FF9800"
+          }
+        >
+          {record}
+        </Tag>
+      ),
     },
     {
       key: "action",
@@ -74,11 +87,7 @@ const ProfileTable = ({ profiles, navigate, page, total }) => {
   return (
     <>
       <Spin spinning={loading}>
-        <Divider>
-          <Button style={{ textAlign: "left" }} type="primary">
-            <Link to="/dashboard/campaign/create">Add Profile</Link>
-          </Button>
-        </Divider>
+        <Divider orientation="right"></Divider>
 
         <Table
           columns={columns}

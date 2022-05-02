@@ -40,7 +40,7 @@ export default function Campaign() {
         <Row justify="center" >
           {campaigns.map((campaign) => (
             <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 8 }} span={5} className="cards_item" >
-              <Card>
+              <Card className="card_body">
                 <div className="card_image">
                   <img
                     src={campaign.image}
@@ -90,7 +90,8 @@ export default function Campaign() {
           ))}
         </Row>
       </>
-       <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 8 }} span={5}> 
+      <div>
+       <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 8 }} span={5}  style={{ float: 'right'}}> 
         <Pagination
           defaultCurrent={1}
           pageSize = {8}
@@ -102,6 +103,7 @@ export default function Campaign() {
           }}
         />
       </Col> 
+      </div>
     </div>
   );
 }
