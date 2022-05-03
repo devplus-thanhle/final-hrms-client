@@ -17,8 +17,16 @@ const campaignActiveReducer = (state = initialState, action) => {
       return {
         campaigns: action.payload.data,
         count: action.payload.count,
+        total: action.payload.total,
+        page: action.payload.page,
       };
-    
+      case CAMPAIGN_ACTIVE_TYPES.GET_CAMPAIGN_ACTIVES:
+        return {
+          ...state,
+          campaigns: action.payload.data,
+          total: action.payload.total,
+          page: action.payload.page,
+        };
     default:
       return state;
   }
