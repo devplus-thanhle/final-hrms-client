@@ -58,7 +58,7 @@ export const getCampaignActiveById = (id) => async (dispatch) => {
 };
 export const createCampaign = (data) => async (dispatch) => {
   try {
-    // dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
+    dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
     const res = await postDataAPI("create-campaign", data);
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
 
@@ -80,7 +80,20 @@ export const updateCampaign =
     try {
       dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
       const res = await patchDataAPI(`update-campaign/${id}`, data);
-      console.log(res);
+      dispatch({
+        type: CAMPAIGN_TYPES.GET_CAMPAIGN_BY_ID,
+        payload: {
+          data: res.data.result,
+        },
+      });
       dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
+      dispatch({
+        type: GLOBALTYPES.ALERT,
+        payload: { success: res.data.msg },
+      });
+      dispatch({
+        type: GLOBALTYPES.ALERT,
+        payload: {},
+      });
     } catch (error) {}
   };
