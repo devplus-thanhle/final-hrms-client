@@ -6,16 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 import { Provider } from "react-redux";
-import store from "./shared/store/configureStore";
 import "antd/dist/antd.min.css";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./shared/store/configureStore";
 
 axios.defaults.baseURL = "http://localhost:5000";
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </PersistGate>
   </Provider>,
   document.getElementById("root")
 );
