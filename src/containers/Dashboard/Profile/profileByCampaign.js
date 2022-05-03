@@ -55,7 +55,19 @@ const columns = [
     title: "Status",
     dataIndex: "status",
     key: "status",
-    render: (record) => <Tag color="blue">{record}</Tag>,
+    render: (record) => (
+      <Tag
+        color={
+          record === "failed"
+            ? "#ff0000"
+            : record === "passed"
+            ? "rgb(82 196 26)"
+            : "#FF9800"
+        }
+      >
+        {record}
+      </Tag>
+    ),
   },
   {
     key: "action",

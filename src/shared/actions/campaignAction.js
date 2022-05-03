@@ -1,4 +1,4 @@
-import { getDataAPI, postDataAPI } from "../../service/BaseApi";
+import { getDataAPI, patchDataAPI, postDataAPI } from "../../service/BaseApi";
 import { GLOBALTYPES } from "./globalTypes";
 
 export const CAMPAIGN_TYPES = {
@@ -6,7 +6,7 @@ export const CAMPAIGN_TYPES = {
   LOADING_CAMPAIGN: "LOADING_CAMPAIGN",
   GET_CAMPAIGN_ID: "GET_CAMPAIGN_ID",
   GET_CAMPAIGN_ACTIVE: "GET_CAMPAIGN_ACTIVE",
-  GET_CAMPAIGN_ID: "GET_CAMPAIGN_ID",
+  GET_CAMPAIGN_BY_ID: "GET_CAMPAIGN_BY_ID",
 };
 
 export const getCampaign = (page) => async (dispatch) => {
@@ -30,12 +30,10 @@ export const getCampaignById = (id) => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
     const res = await getDataAPI(`get-campaign/${id}`);
-    
     dispatch({
-      type: CAMPAIGN_TYPES.GET_CAMPAIGN,
+      type: CAMPAIGN_TYPES.GET_CAMPAIGN_BY_ID,
       payload: {
-        data: res.data.result.campaign,
-        count: res.data.result.count,
+        data: res.data.result,
       },
     });
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
@@ -47,12 +45,11 @@ export const getCampaignActiveById = (id) => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
     const res = await getDataAPI(`get-campaign/${id}`);
-    console.log(res)
-    
+    console.log(res);
+
     dispatch({
       type: CAMPAIGN_TYPES.GET_CAMPAIGN_ID,
-      payload: 
-         res.data.result.campaign,
+      payload: res.data.result.campaign,
     });
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
   } catch (error) {
@@ -61,7 +58,7 @@ export const getCampaignActiveById = (id) => async (dispatch) => {
 };
 export const createCampaign = (data) => async (dispatch) => {
   try {
-    dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
+    // dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
     const res = await postDataAPI("create-campaign", data);
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
 
@@ -77,3 +74,13 @@ export const createCampaign = (data) => async (dispatch) => {
     console.log(error);
   }
 };
+export const updateCampaign =
+  ({ id, data }) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
+      const res = await patchDataAPI(`update-campaign/${id}`, data);
+      console.log(res);
+      dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
+    } catch (error) {}
+  };

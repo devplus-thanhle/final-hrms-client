@@ -19,12 +19,17 @@ const campaignReducer = (state = initialState, action) => {
         campaigns: action.payload.data,
         total: action.payload.total,
       };
-      case CAMPAIGN_TYPES.GET_CAMPAIGN_ID:
-        return {
-          ...state,
-          campaign: action.payload,
-        }
-    
+    // case CAMPAIGN_TYPES.GET_CAMPAIGN_ID:
+    //   return {
+    //     ...state,
+    //     campaign: action.payload,
+    //   }
+    case CAMPAIGN_TYPES.GET_CAMPAIGN_BY_ID:
+      return {
+        ...state,
+        campaign: action.payload.data,
+      };
+
     default:
       return state;
   }
