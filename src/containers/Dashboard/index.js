@@ -32,7 +32,6 @@ const navigation = [
 const Dasboard = () => {
   const [open, setOpen] = useState(true);
   const location = useLocation();
-  console.log(location);
 
   return (
     <div>

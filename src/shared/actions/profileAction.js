@@ -9,10 +9,8 @@ export const PROFILE_TYPES = {
   LOADING: "LOADING",
 };
 export const createProfile = (data, id) => async (dispatch) => {
-  console.log("____", data);
   try {
     const res = await postDataAPI("create-profile", data);
-    console.log(res);
   } catch (error) {
     console.log(error);
   }
@@ -56,8 +54,8 @@ export const getProfileByCampaign = (id) => async (dispatch) => {
     dispatch({
       type: PROFILE_TYPES.GET_PROFILE_CAMPAIGN,
       payload: {
-        title: res.data.result.campaign[0].title,
-        profiles: res.data.result.campaign[0].profiles,
+        title: res.data.result.title,
+        profiles: res.data.result.profiles,
       },
     });
     dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
@@ -125,7 +123,6 @@ export const changeStatus =
 export const filterProfiles =
   ({ step, status, page, value }) =>
   async (dispatch) => {
-    console.log(value);
     try {
       const search = value ? `&search=${value}` : "";
       const res = await getDataAPI(

@@ -6,6 +6,7 @@ import ProfieByCampaign from "../Profile/profileByCampaign";
 import Profile from "../Profile/profile";
 import DetailProfile from "../Profile/detailProfile";
 import Statistic from "../Statistic/statistic";
+import EditCampaign from "../Campaign/editCampaign";
 export const routes = [
   {
     path: "/campaign",
@@ -18,6 +19,10 @@ export const routes = [
   {
     path: "/campaign/:id/profile",
     component: <ProfieByCampaign />,
+  },
+  {
+    path: "campaign/:id/edit",
+    component: <EditCampaign />,
   },
   {
     path: "/profile",
