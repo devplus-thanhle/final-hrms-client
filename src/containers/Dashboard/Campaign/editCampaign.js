@@ -57,6 +57,7 @@ const EditCampaign = () => {
     position,
     technology,
     image,
+    active,
   } = campaignData;
 
   useEffect(() => {
@@ -71,9 +72,8 @@ const EditCampaign = () => {
       title: title,
       description: description,
       address: address,
-      // startDate: startDate,
-      // endDate: new Date(endDate).toLocaleDateString(),
       rangeTimePicker: [moment(startDate), moment(endDate)],
+      status: active === true ? "Active" : "Disable",
       quantity,
       position: position,
       technology: technology,
@@ -107,6 +107,7 @@ const EditCampaign = () => {
     data.append("quantity", values.quantity);
     data.append("technology", values.technology);
     data.append("position", values.position);
+    data.append("status", values.status);
 
     console.log(values.description);
 
@@ -160,14 +161,16 @@ const EditCampaign = () => {
             form={form}
             initialValues={{
               size: componentSize,
-
-              title: campaignData ? campaignData.title : "",
             }}
             onValuesChange={onFormLayoutChange}
             size={componentSize}
             onFinish={onFinish}
           >
-            <Form.Item name="title" label="Title">
+            <Form.Item
+              name="title"
+              label="Title"
+              rules={[{ required: true, message: "Please input your Name!" }]}
+            >
               <Input />
             </Form.Item>
             <Form.Item
@@ -193,10 +196,32 @@ const EditCampaign = () => {
                 )}
               </Upload>
             </Form.Item>
-            <Form.Item name="rangeTimePicker" label="Date" {...rangeConfig}>
+            <Form.Item
+              name="rangeTimePicker"
+              label="Date"
+              rules={[
+                { required: true, message: "Please input your Date Time" },
+              ]}
+            >
               <RangePicker format="DD-MM-YYYY" style={{ width: "100%" }} />
             </Form.Item>
-            <Form.Item name="position" label="Position">
+            <Form.Item
+              name="status"
+              label="Status"
+              rules={[{ required: true, message: "Please input your Status!" }]}
+            >
+              <Select>
+                <Option value={true}>Active</Option>
+                <Option value={false}>Disable</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="position"
+              label="Position"
+              rules={[
+                { required: true, message: "Please check your Position!" },
+              ]}
+            >
               <Select placeholder="Position">
                 <Option value="intern">Intern</Option>
                 <Option value="fresher">Fresher</Option>
@@ -207,7 +232,13 @@ const EditCampaign = () => {
               </Select>
             </Form.Item>
 
-            <Form.Item name="technology" label="Technology">
+            <Form.Item
+              name="technology"
+              label="Technology"
+              rules={[
+                { required: true, message: "Please check your Technology!" },
+              ]}
+            >
               <Select mode="tags" placeholder="Technology">
                 <Option value="reactjs">ReactJs</Option>
                 <Option value="vuejs">VueJs</Option>
@@ -220,10 +251,22 @@ const EditCampaign = () => {
               </Select>
             </Form.Item>
 
-            <Form.Item label="Quantity" name="quantity">
+            <Form.Item
+              label="Quantity"
+              name="quantity"
+              rules={[
+                { required: true, message: "Please input your Quantity!" },
+              ]}
+            >
               <InputNumber min={1} placeholder="Quantity" />
             </Form.Item>
-            <Form.Item label="Address" name="address">
+            <Form.Item
+              label="Address"
+              name="address"
+              rules={[
+                { required: true, message: "Please input your Address!" },
+              ]}
+            >
               <Input placeholder="Address" />
             </Form.Item>
             <Form.Item
@@ -234,6 +277,9 @@ const EditCampaign = () => {
                 const data = editor.getData();
                 return data;
               }}
+              rules={[
+                { required: true, message: "Please input your Description!" },
+              ]}
             >
               <CKEditor
                 editor={ClassicEditor}
