@@ -1,5 +1,6 @@
 import React from "react";
 import Home from "../containers/HomePage/index";
+import LogIn from "../containers/LogIn/LogIn";
 import Dashboard from "../containers/Dashboard/index";
 import NotFound from "../containers/404Page/index";
 import Campaign from "../containers/Campaign/index";
@@ -18,6 +19,10 @@ export const routes = [
     component: <Dashboard />,
   },
   {
+    path: "/login",
+    component: <LogIn />,
+  },
+  {
     path: "*",
     component: <NotFound />,
   },
@@ -25,4 +30,5 @@ export const routes = [
     path: "/campaigns/*",
     component: <Campaign />,
   }
+
 ];

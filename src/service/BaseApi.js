@@ -1,5 +1,12 @@
 import axios from "axios";
 
+export const login = (user) => {
+  const res = axios.post("/api/login", {
+    email: user.username,
+    password: user.password
+  })
+  return res;
+};
 export const getDataAPI = async (url, token) => {
   const res = await axios.get(`/api/${url}`, {
     headers: { Authorization: token },
