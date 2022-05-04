@@ -31,11 +31,8 @@ export const getCampaignById = (id) => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
     const res = await getDataAPI(`get-campaign/${id}`);
-<<<<<<< HEAD
     console.log(res)
     console.log(id)
-=======
->>>>>>> 5c15c4717547f36ccfd8f143779e024705382d52
     dispatch({
       type: CAMPAIGN_TYPES.GET_CAMPAIGN_BY_ID,
       payload: {
@@ -47,9 +44,7 @@ export const getCampaignById = (id) => async (dispatch) => {
     console.log(error);
   }
 };
-<<<<<<< HEAD
 
-=======
 export const getCampaignActiveById = (id) => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
@@ -65,7 +60,6 @@ export const getCampaignActiveById = (id) => async (dispatch) => {
     console.log(error);
   }
 };
->>>>>>> 5c15c4717547f36ccfd8f143779e024705382d52
 export const createCampaign = (data) => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });

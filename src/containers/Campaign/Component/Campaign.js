@@ -58,7 +58,7 @@ const Campaign = () => {
   const handleSubmit = (value) => {
     navigate({
       pathname: "/campaigns",
-      search: `?search=${search}&page=${page}&position=${position}&technology=${technology}`,
+      search: `?search=${value}&page=${page}&position=${position}&technology=${technology}`,
     });
     dispatch(filterCampaignActive({ position, technology, page, value }));
   };
@@ -128,6 +128,8 @@ const Campaign = () => {
               className="reset_button"
               onClick={handleReset}
               type="primary"
+              size="large"
+
             >
               Reset
             </Button>

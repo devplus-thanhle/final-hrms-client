@@ -181,9 +181,12 @@
   margin-top: 5px;
 }
 .search_button{
-	width: 650px;
+	width: 450px;
   margin: 0 auto;
   display: block;
+}
+.search_div{
+  width: 100%;
 }
 .reset_button{
   margin: 0 auto;

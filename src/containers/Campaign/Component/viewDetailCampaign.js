@@ -13,8 +13,8 @@ export default function ViewDetailCampaign() {
   useEffect(async () => {
     await dispatch(getCampaignById(id));
   }, []);
-  const todo = useSelector((state) => state.campaigns.campaigns);
-
+  const todo = useSelector((state) => state.campaigns.campaign);
+  console.log(todo.campaign[0])
   const viewPageCompany = () => {
     const url = "https://stunited.vn/";
     window.open(url, "_blank");
@@ -24,7 +24,7 @@ export default function ViewDetailCampaign() {
       <Row  >
         <Col  xs={24} sm={24} md={24} lg={16} xl={16} style={{backgroundColor: "#dfe6e9"}}>
         <Space className="space-apply">
-              <div className="title_detail">{todo[0]?.title}</div>
+              <div className="title_detail">{todo.campaign[0]?.title}</div>
               <Link to={``}>
             <Button className="button-apply" type="primary" danger>
               Apply CV
@@ -41,11 +41,11 @@ export default function ViewDetailCampaign() {
                         backgroundColor: "#f6ffed",
                         borderColor: "#b7eb8f",
                       }} >
-              {todo[0]?.position}
+              {todo.campaign[0]?.position}
               </Tag>
               </div>
               <div className="position_detail">Technology:
-             {todo[0]?.technology.map((technology) => (
+             {todo.campaign[0]?.technology.map((technology) => (
                 <Tag className="technologyTag_detail"
                   style={{
                     color: "#08979c",
@@ -59,24 +59,24 @@ export default function ViewDetailCampaign() {
               </div>
 
               <Text className="Datelimit_Text" >
-                {new Date(todo[0]?.startDate).toLocaleDateString("vi-GB")}-{new Date(todo[0]?.endDate).toLocaleDateString("vi-GB")}
+                {new Date(todo.campaign[0]?.startDate).toLocaleDateString("vi-GB")}-{new Date(todo.campaign[0]?.endDate).toLocaleDateString("vi-GB")}
               </Text>
               <br></br>
               <HomeFilled className="icon_card" />
                   <Text className="text_address" strong>
-                  {todo[0]?.address}
+                  {todo.campaign[0]?.address}
                   </Text>
               <Divider />
             </Col>
             <Col offset={1} xs={0} sm={0} md={0} lg={6} xl={6}>
-              <img src={todo[0]?.image} style={{ width: "100%", objectFit: "contain" }}></img>
+              <img src={todo.campaign[0]?.image} style={{ width: "100%", objectFit: "contain" }}></img>
            
             </Col>
           </Row>
           <Row  span={24} style={{margin: "0 4%"}} >
             <div className="description_detail" dangerouslySetInnerHTML=
             {{
-              __html: todo[0]?.description,
+              __html: todo.campaign[0]?.description,
             }}
             style={{ objectFit: "contain" }}
             >
