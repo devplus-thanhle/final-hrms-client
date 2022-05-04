@@ -3,6 +3,7 @@ import { CAMPAIGN_TYPES } from "../actions/campaignAction";
 const initialState = {
   campaigns: [],
   campaign: {},
+  campaignOfMonth: {},
   count: 0,
   loading: false,
 };
@@ -35,6 +36,18 @@ const campaignReducer = (state = initialState, action) => {
         campaigns: action.payload.data,
         total: action.payload.total,
         page: action.payload.page,
+      };
+    case CAMPAIGN_TYPES.GET_CAMPAIGN_OF_MONTH:
+      return {
+        ...state,
+        campaignOfMonth: {
+          campaign: action.payload.campaignOfMonth,
+          profile: action.payload.profilesOfMonth,
+          profileAccept: action.payload.profileAccept,
+          profileProcessing: action.payload.profileProcessing,
+          allProfiles: action.payload.allProfiles,
+          profileReject: action.payload.profileReject,
+        },
       };
     default:
       return state;

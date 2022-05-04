@@ -1,12 +1,21 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Layout, Menu, Space, Avatar, Dropdown, Button } from "antd";
+import {
+  Layout,
+  Menu,
+  Space,
+  Avatar,
+  Dropdown,
+  Button,
+  Typography,
+} from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
   AreaChartOutlined,
   ReadOutlined,
+  ThunderboltOutlined,
 } from "@ant-design/icons";
 import RootRouter from "./Router";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -16,8 +25,14 @@ import { logOut } from "../../shared/actions/loginAction";
 import { updateCampaignDateNow } from "../../shared/actions/campaignAction";
 
 const { Header, Sider, Content } = Layout;
+const { Text, Title } = Typography;
 
 const navigation = [
+  // {
+  //   name: "Dashboard",
+  //   path: "/dashboard",
+  //   icon: <ThunderboltOutlined />,
+  // },
   {
     name: "Statistic",
     path: "/dashboard",
@@ -32,6 +47,13 @@ const navigation = [
     name: "Profile",
     path: "/dashboard/profile",
     icon: <UserOutlined />,
+  },
+];
+const logo = [
+  {
+    name: "ST United",
+    path: "/dashboard",
+    icon: <ThunderboltOutlined />,
   },
 ];
 
@@ -69,7 +91,20 @@ const Dasboard = () => {
     <div>
       <Layout style={{ height: "100vh" }}>
         <Sider trigger={null} collapsible collapsed={open} collapsedWidth="70">
-          <div className="logo" />
+          <div className="logo">
+            <Menu
+              theme="dark"
+              mode="inline"
+              defaultSelectedKeys={["/"]}
+              selectedKeys={[location.pathname]}
+            >
+              {logo.map((item, index) => (
+                <Menu.Item icon={item.icon}>
+                  <Link to={item.path}>{item.name}</Link>
+                </Menu.Item>
+              ))}
+            </Menu>
+          </div>
           <Menu
             theme="dark"
             mode="inline"
@@ -92,17 +127,22 @@ const Dasboard = () => {
               className: "trigger",
               onClick: () => setOpen(!open),
             })}
-            <Dropdown
-              overlay={() => (
-                <Menu>
-                  <Menu.Item onClick={handleLogout}>Logout</Menu.Item>
-                </Menu>
-              )}
-              placement="bottomRight"
-              arrow
-            >
-              <Avatar src={user.avatar} style={{ marginRight: "20px" }} />
-            </Dropdown>
+            <Space>
+              <Dropdown
+                overlay={() => (
+                  <Menu>
+                    <Menu.Item onClick={handleLogout}>Logout</Menu.Item>
+                  </Menu>
+                )}
+                placement="bottomRight"
+                arrow
+              >
+                <Avatar src={user.avatar} style={{ marginRight: "5px" }} />
+              </Dropdown>
+              <Title className="title_HR" level={5}>
+                {user.fullname}
+              </Title>
+            </Space>
           </Header>
           <Content
             className="site-layout-background"
