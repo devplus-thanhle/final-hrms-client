@@ -191,7 +191,7 @@ const Campaign = () => {
                       </Text>
                     </Title>
                     <div style={{display: "flex", gap: "5px", alignItems: "center", justifyContent: "flex-start"}}>
-                      {item.technology.map((technology) => (
+                      {item?.technology?.map((technology) => (
                         <Tag
                           style={{
                             color: "#08979c",
