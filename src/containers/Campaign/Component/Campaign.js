@@ -170,6 +170,14 @@ const Campaign = () => {
               <Radio value=".Net">.Net</Radio>
             </Space>
           </Radio.Group>
+          <Space style={{ marginLeft: "10px" }}>
+              <Button type="primary" danger onClick={handleReset}>
+                Reset
+              </Button>
+              <Button type="primary" onClick={handleSubmit}>
+                Submit
+              </Button>
+            </Space>
         </Sider>
         <Content className="content_campaigns">
           <Title level={3}>Recommended Jobs</Title>
