@@ -95,7 +95,7 @@ const Campaign = () => {
   return (
     <div>
       <Row justify="center">
-        <Col >
+        <Col   >
           <Space className="search_div">
             <Search
               placeholder="Search Keyword skill (NodeJs, ReactJs...), Job Title, Company..."
@@ -118,8 +118,8 @@ const Campaign = () => {
           </Space>
         </Col>
       </Row>
-
-      <Layout>
+       <Row>       
+      <Layout className="layout_campaigns">
         <Sider className="sider_campaigns">
           <Title level={3}>
             <Text strong>Filter:</Text>
@@ -137,7 +137,7 @@ const Campaign = () => {
               <Text type="secondary">Position</Text>
             </Title>
 
-            <Space direction="vertical">
+            <Space direction="vertical" wrap={true}>
               <Radio value="Intern">Intern</Radio>
               <Radio value="Junior">Junior</Radio>
               <Radio value="Senior">Senior</Radio>
@@ -159,7 +159,7 @@ const Campaign = () => {
               <Text type="secondary">Technology</Text>
             </Title>
 
-            <Space direction="vertical">
+            <Space direction="vertical" wrap={true}>
               <Radio value="NodeJs">NodeJs</Radio>
               <Radio value="ReactJs">ReactJs</Radio>
               <Radio value="Php">Php</Radio>
@@ -173,42 +173,37 @@ const Campaign = () => {
         </Sider>
         <Content className="content_campaigns">
           <Title level={3}>Recommended Jobs</Title>
-          <Row gutter={[16, 16]}>
+          <div className="campaigns__list--wrapper">
             {campaigns.map((item) => (
-              <Col
-                xs={{ span: 24 }}
-                sm={{ span: 12 }}
-                md={{ span: 8 }}
-                xl={8}
-                span={5}
-                className="cards_item"
-              >
+              
                 <Link to={`/campaigns/detail/${item._id}`}>
                   <Card
                     className="card_campaigns"
                     hoverable
-                    style={{ width: 320 }}
+                    // style={{ width: 320 }}
                     cover={<img className="image_card" src={item.image} />}
                   >
                     <Title level={4}>
                       <Text strong>
                         {item.title.length < 30
                           ? item.title
-                          : item.title.slice(0, 24) + "..."}
+                          : item.title.slice(0, 20) + "..."}
                       </Text>
                     </Title>
-                    {item.technology.map((technology) => (
-                      <Tag
-                        style={{
-                          color: "#08979c",
-                          backgroundColor: "#e6fffb",
-                          borderColor: "#87e8de",
-                          borderRadius: "10px",
-                        }}
-                      >
-                        {technology}
-                      </Tag>
-                    ))}
+                    <div style={{display: "flex", gap: "5px", alignItems: "center", justifyContent: "flex-start"}}>
+                      {item?.technology?.map((technology) => (
+                        <Tag
+                          style={{
+                            color: "#08979c",
+                            backgroundColor: "#e6fffb",
+                            borderColor: "#87e8de",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          {technology}
+                        </Tag>
+                      ))}
+                    </div>
 
                     <Title className="title_position" level={5}>
                       <Text type="secondary">Position:</Text>
@@ -218,37 +213,40 @@ const Campaign = () => {
                           color: "green",
                           backgroundColor: "#f6ffed",
                           borderColor: "#b7eb8f",
+                          width: "fit-content"
                         }}
                       >
                         {item.position}
                       </Tag>
                     </Title>
-                    <Text className="date_card">
-                      {new Date(item.startDate).toLocaleDateString("vi-GB")} -
-                      {new Date(item.endDate).toLocaleDateString("vi-GB")}
-                    </Text>
-                    <br></br>
-                    <HomeFilled className="icon_card" />
-                    <Text className="text_address" strong>
-                      {item.address}
-                    </Text>
-                    <Link to={`/campaigns/detail/${item._id}`}>
-                      <Button
-                        className="button_campaign"
-                        type="primary"
-                        shape="round"
-                        size="large"
-                      >
-                        Apply
-                      </Button>
+                    <div style={{marginTop: "auto"}}>
+                      <Text className="date_card">
+                        {new Date(item.startDate).toLocaleDateString("vi-GB")} -
+                        {new Date(item.endDate).toLocaleDateString("vi-GB")}
+                      </Text>
+                      <br></br>
+                      <HomeFilled className="icon_card" />
+                      <Text className="text_address" strong>
+                        {item.address}
+                      </Text>
+                      <Link to={`/campaigns/apply/${item._id}`}>
+                        <Button
+                          className="button_campaign"
+                          type="primary"
+                          shape="round"
+                          size="large"
+                        >
+                          Apply
+                        </Button>
                     </Link>
+                    </div>
                   </Card>
                 </Link>
-              </Col>
             ))}
-          </Row>
+          </div>
         </Content>
       </Layout>
+      </Row>
       <br></br>
       <Pagination
         style={{ float: "right" }}
