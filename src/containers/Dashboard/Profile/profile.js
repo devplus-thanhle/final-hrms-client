@@ -22,6 +22,7 @@ import {
 } from "../../../shared/actions/profileAction";
 import ProfileTable from "./Components/tableProfile";
 import { useLocation, useNavigate } from "react-router-dom";
+import * as XLSX from "xlsx";
 
 const { Search } = Input;
 const { Sider, Content } = Layout;
@@ -77,6 +78,14 @@ const Profile = () => {
     dispatch(getProfiles());
   };
 
+  const handleExport = () => {
+    console.log(profiles);
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.json_to_sheet(profiles);
+    XLSX.utils.book_append_sheet(wb, ws, "MySheet1");
+    XLSX.writeFile(wb, "profiles.xlsx");
+  };
+
   return (
     <>
       <Layout>
@@ -117,7 +126,11 @@ const Profile = () => {
                     >
                       Filter
                     </Button>
-                    <Button type="default" icon={<ExportOutlined />}>
+                    <Button
+                      onClick={handleExport}
+                      type="default"
+                      icon={<ExportOutlined />}
+                    >
                       Export
                     </Button>
                   </Space>
