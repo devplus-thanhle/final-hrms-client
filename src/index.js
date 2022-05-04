@@ -10,7 +10,7 @@ import "antd/dist/antd.min.css";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./shared/store/configureStore";
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "https://final-devplus.herokuapp.com/";
 
 ReactDOM.render(
   <Provider store={store}>
