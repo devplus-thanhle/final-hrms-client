@@ -90,7 +90,8 @@ const Campaign = () => {
 
     dispatch(getCampaignActive());
   };
-
+  // var today = new Date();
+  // var date = 
 
   return (
     <div>
@@ -229,8 +230,10 @@ const Campaign = () => {
                     </Title>
                     <div style={{marginTop: "auto"}}>
                       <Text className="date_card">
-                        {new Date(item.startDate).toLocaleDateString("vi-GB")} -
-                        {new Date(item.endDate).toLocaleDateString("vi-GB")}
+                        {/* {  new Date(item.endDate).toLocaleDateString("vi-GB")   }                     
+                         */
+                         Math.ceil((new Date(item.endDate).getTime() - new Date().getTime() ) / (1000 *3600 * 24))
+                         } Days left
                       </Text>
                       <br></br>
                       <HomeFilled className="icon_card" />
