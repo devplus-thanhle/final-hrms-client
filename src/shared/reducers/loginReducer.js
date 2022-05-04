@@ -6,10 +6,16 @@ const initialState = {
   token: "",
   message: "",
   error: false,
+  loading: false,
 };
 
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOGIN_TYPES.LOADING_LOGIN:
+      return {
+        ...state,
+        loading: action.payload,
+      };
     case LOGIN_TYPES.LOGIN_SUCCESS:
       return {
         user: action.payload.user,

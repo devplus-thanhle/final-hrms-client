@@ -97,3 +97,13 @@ export const updateCampaign =
       });
     } catch (error) {}
   };
+
+export const updateCampaignDateNow = () => async (dispatch) => {
+  try {
+    dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
+    const res = await patchDataAPI(`update-campaign-disable`);
+    dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
+  } catch (error) {
+    console.log(error);
+  }
+};
