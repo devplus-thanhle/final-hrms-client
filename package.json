@@ -6,6 +6,7 @@
     "@ant-design/icons": "^4.7.0",
     "@ckeditor/ckeditor5-build-classic": "^34.0.0",
     "@ckeditor/ckeditor5-react": "^5.0.0",
+    "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.1",
     "@testing-library/user-event": "^13.5.0",
@@ -14,7 +15,11 @@
     "axios": "^0.26.1",
     "ckeditor5": "^34.0.0",
     "fetch-jsonp": "^1.2.1",
+<<<<<<< HEAD
     "history": "^5.2.0",
+=======
+    "jwt-decode": "^3.1.2",
+>>>>>>> 5c15c4717547f36ccfd8f143779e024705382d52
     "moment": "^2.29.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -23,8 +28,9 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "recharts": "^2.1.9",
-    "redux": "^4.1.2",
+    "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
+    "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.1",
     "sass": "^1.51.0",
     "web-vitals": "^2.1.4"

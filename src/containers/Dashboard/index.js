@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import { Layout, Menu, Space } from "antd";
+import React, { useEffect, useState } from "react";
+import { Layout, Menu, Space, Avatar, Dropdown, Button } from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -8,7 +8,11 @@ import {
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import RootRouter from "./Router";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import jwtDecode from "jwt-decode";
+import { logOut } from "../../shared/actions/loginAction";
+import { updateCampaignDateNow } from "../../shared/actions/campaignAction";
 
 const { Header, Sider, Content } = Layout;
 
@@ -29,11 +33,54 @@ const navigation = [
     icon: <VideoCameraOutlined />,
   },
 ];
+const menu = (
+  <Menu
+    items={[
+      {
+        label: "Logout",
+      },
+      {
+        label: "Logout",
+      },
+      {
+        label: "Logout",
+      },
+      {
+        label: "Logout",
+      },
+    ]}
+  />
+);
 
 const Dasboard = () => {
   const [open, setOpen] = useState(true);
   const location = useLocation();
-  console.log(location);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.login.token);
+  const user = useSelector((state) => state.login.user);
+
+  useEffect(() => {
+    if (token) {
+      const decoded = jwtDecode(token);
+      if (decoded.exp < Date.now() / 1000) {
+        dispatch(logOut());
+      }
+    } else {
+      navigate("/login");
+    }
+  });
+
+  useEffect(() => {
+    if (!token) navigate("/login");
+  });
+
+  useEffect(() => {
+    dispatch(updateCampaignDateNow());
+  });
+  const handleLogout = () => {
+    dispatch(logOut());
+  };
 
   return (
     <div>
@@ -54,11 +101,25 @@ const Dasboard = () => {
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
+          <Header
+            className="site-layout-background header-avatar"
+            style={{ padding: 0 }}
+          >
             {React.createElement(open ? MenuUnfoldOutlined : MenuFoldOutlined, {
               className: "trigger",
               onClick: () => setOpen(!open),
             })}
+            <Dropdown
+              overlay={() => (
+                <Menu>
+                  <Menu.Item onClick={handleLogout}>Logout</Menu.Item>
+                </Menu>
+              )}
+              placement="bottomRight"
+              arrow
+            >
+              <Avatar src={user.avatar} style={{ marginRight: "20px" }} />
+            </Dropdown>
           </Header>
           <Content
             className="site-layout-background"

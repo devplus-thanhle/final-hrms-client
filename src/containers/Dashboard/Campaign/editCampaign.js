@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   Input,
@@ -15,20 +15,73 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { InboxOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { createCampaign } from "../../../shared/actions/campaignAction";
+import {
+  getCampaignById,
+  updateCampaign,
+} from "../../../shared/actions/campaignAction";
+import { useParams } from "react-router-dom";
+import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
 
-const CreateCampaign = () => {
+const EditCampaign = () => {
   const [componentSize, setComponentSize] = useState("default");
-  const { loading } = useSelector((state) => state.campaigns);
+  const { loading, campaign } = useSelector((state) => state.campaigns);
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
   const [text, setText] = useState("");
   const [fileList, setFileList] = useState("");
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { id } = useParams();
+  const initState = {
+    title: "",
+    description: "",
+    address: "",
+    startDate: "",
+    endDate: "",
+    quantity: "",
+    position: [],
+    technology: [],
+    image: "",
+  };
+  const [campaignData, setCampaignData] = useState(initState);
+  const {
+    title,
+    description,
+    address,
+    startDate,
+    endDate,
+    quantity,
+    position,
+    technology,
+    image,
+    active,
+  } = campaignData;
+
+  useEffect(() => {
+    dispatch(getCampaignById(id));
+  }, [dispatch, id, form]);
+
+  useEffect(() => {
+    campaign && setCampaignData(campaign);
+  }, [campaign]);
+  useEffect(() => {
+    form.setFieldsValue({
+      title: title,
+      description: description,
+      address: address,
+      rangeTimePicker: [moment(startDate), moment(endDate)],
+      status: active === true ? true : false,
+      quantity,
+      position: position,
+      technology: technology,
+      image: image,
+    });
+  });
 
   const onFormLayoutChange = ({ size }) => {
     setComponentSize(size);
@@ -42,23 +95,25 @@ const CreateCampaign = () => {
       },
     ],
   };
-  const onFinish = async (values) => {
+  const onFinish = (values) => {
     let startDate = new Date(values.rangeTimePicker[0]);
     let endDate = new Date(values.rangeTimePicker[1]);
+
     const data = new FormData();
     data.append("recfile", imageUrl);
-    data.append("title", values.Name);
-    data.append("description", text);
-    data.append("address", values.Address);
+    data.append("title", values.title);
+    data.append("description", values.description);
+    data.append("address", values.address);
     data.append("startDate", startDate);
     data.append("endDate", endDate);
-    data.append("quantity", values.Quantity);
-    data.append("technology", values.Technology);
-    data.append("position", values.Position);
+    data.append("quantity", values.quantity);
+    data.append("technology", values.technology);
+    data.append("position", values.position);
+    data.append("status", values.status);
+    console.log(values.status);
+    console.log(values.position);
 
-    console.log(startDate, endDate);
-
-    await dispatch(createCampaign(data));
+    dispatch(updateCampaign({ id: campaignData._id, data }));
     navigate("/dashboard/campaign");
   };
 
@@ -95,7 +150,7 @@ const CreateCampaign = () => {
           level={2}
           style={{ color: "rgb(64 169 255)", textAlign: "center" }}
         >
-          Create Campaign
+          Edit Campaign
         </Title>
         <div>
           <Form
@@ -106,23 +161,21 @@ const CreateCampaign = () => {
               span: 8,
             }}
             layout="horizontal"
+            form={form}
             initialValues={{
               size: componentSize,
-              Address: "368 Trần Hưng Đạo - Đà Nẵng",
             }}
             onValuesChange={onFormLayoutChange}
             size={componentSize}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
           >
             <Form.Item
-              name="Name"
-              label="Name"
+              name="title"
+              label="Title"
               rules={[{ required: true, message: "Please input your Name!" }]}
             >
               <Input />
             </Form.Item>
-
             <Form.Item
               label="Image"
               name="dragger"
@@ -137,25 +190,36 @@ const CreateCampaign = () => {
                 showUploadList={false}
                 onChange={onChanges}
               >
-                {fileList ? <img src={imageUrl} alt="" /> : <InboxOutlined />}
+                {fileList ? (
+                  <img src={imageUrl} alt="" />
+                ) : image ? (
+                  <img src={image} alt="" />
+                ) : (
+                  <InboxOutlined />
+                )}
               </Upload>
             </Form.Item>
             <Form.Item
               name="rangeTimePicker"
               label="Date"
-              {...rangeConfig}
               rules={[
                 { required: true, message: "Please input your Date Time" },
               ]}
             >
-              <RangePicker
-                showTime
-                format="DD-MM-YYYY"
-                style={{ width: "100%" }}
-              />
+              <RangePicker format="DD-MM-YYYY" style={{ width: "100%" }} />
             </Form.Item>
             <Form.Item
-              name="Position"
+              name="status"
+              label="Status"
+              rules={[{ required: true, message: "Please input your Status!" }]}
+            >
+              <Select>
+                <Option value={true}>Active</Option>
+                <Option value={false}>Disable</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="position"
               label="Position"
               rules={[
                 { required: true, message: "Please check your Position!" },
@@ -172,7 +236,7 @@ const CreateCampaign = () => {
             </Form.Item>
 
             <Form.Item
-              name="Technology"
+              name="technology"
               label="Technology"
               rules={[
                 { required: true, message: "Please check your Technology!" },
@@ -192,20 +256,16 @@ const CreateCampaign = () => {
 
             <Form.Item
               label="Quantity"
-              name="Quantity"
+              name="quantity"
               rules={[
                 { required: true, message: "Please input your Quantity!" },
               ]}
             >
-              <InputNumber
-                min={1}
-                placeholder="Quantity"
-                style={{ width: "100%" }}
-              />
+              <InputNumber min={1} placeholder="Quantity" />
             </Form.Item>
             <Form.Item
               label="Address"
-              name="Address"
+              name="address"
               rules={[
                 { required: true, message: "Please input your Address!" },
               ]}
@@ -214,7 +274,12 @@ const CreateCampaign = () => {
             </Form.Item>
             <Form.Item
               label="Description"
-              name="Description"
+              name="description"
+              valuePropName="data"
+              getValueFromEvent={(event, editor) => {
+                const data = editor.getData();
+                return data;
+              }}
               rules={[
                 { required: true, message: "Please input your Description!" },
               ]}
@@ -222,10 +287,7 @@ const CreateCampaign = () => {
               <CKEditor
                 editor={ClassicEditor}
                 config={{ placeholder: "Description" }}
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  setText(data);
-                }}
+                // data={description}
               />
             </Form.Item>
             <Form.Item style={{ justifyContent: "center", textAlign: "end" }}>
@@ -243,4 +305,4 @@ const CreateCampaign = () => {
   );
 };
 
-export default CreateCampaign;
+export default EditCampaign;

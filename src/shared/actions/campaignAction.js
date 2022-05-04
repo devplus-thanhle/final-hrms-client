@@ -1,12 +1,13 @@
-import { getDataAPI, postDataAPI } from "../../service/BaseApi";
+import { getDataAPI, patchDataAPI, postDataAPI } from "../../service/BaseApi";
 import { GLOBALTYPES } from "./globalTypes";
 
 export const CAMPAIGN_TYPES = {
   GET_CAMPAIGN: "GET_CAMPAIGN",
+  GET_CAMPAIGNS: "GET_CAMPAIGNS",
   LOADING_CAMPAIGN: "LOADING_CAMPAIGN",
   GET_CAMPAIGN_ID: "GET_CAMPAIGN_ID",
   GET_CAMPAIGN_ACTIVE: "GET_CAMPAIGN_ACTIVE",
-  GET_CAMPAIGN_ID: "GET_CAMPAIGN_ID",
+  GET_CAMPAIGN_BY_ID: "GET_CAMPAIGN_BY_ID",
 };
 
 export const getCampaign = (page) => async (dispatch) => {
@@ -30,13 +31,15 @@ export const getCampaignById = (id) => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
     const res = await getDataAPI(`get-campaign/${id}`);
+<<<<<<< HEAD
     console.log(res)
     console.log(id)
+=======
+>>>>>>> 5c15c4717547f36ccfd8f143779e024705382d52
     dispatch({
-      type: CAMPAIGN_TYPES.GET_CAMPAIGN,
+      type: CAMPAIGN_TYPES.GET_CAMPAIGN_BY_ID,
       payload: {
-        data: res.data.result.campaign,
-        count: res.data.result.count,
+        data: res.data.result,
       },
     });
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
@@ -44,7 +47,25 @@ export const getCampaignById = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+<<<<<<< HEAD
 
+=======
+export const getCampaignActiveById = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
+    const res = await getDataAPI(`get-campaign/${id}`);
+    console.log(res);
+
+    dispatch({
+      type: CAMPAIGN_TYPES.GET_CAMPAIGN_ID,
+      payload: res.data.result.campaign,
+    });
+    dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
+  } catch (error) {
+    console.log(error);
+  }
+};
+>>>>>>> 5c15c4717547f36ccfd8f143779e024705382d52
 export const createCampaign = (data) => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
@@ -63,3 +84,58 @@ export const createCampaign = (data) => async (dispatch) => {
     console.log(error);
   }
 };
+export const updateCampaign =
+  ({ id, data }) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
+      const res = await patchDataAPI(`update-campaign/${id}`, data);
+      dispatch({
+        type: CAMPAIGN_TYPES.GET_CAMPAIGN_BY_ID,
+        payload: {
+          data: res.data.result,
+        },
+      });
+      dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
+      dispatch({
+        type: GLOBALTYPES.ALERT,
+        payload: { success: res.data.msg },
+      });
+      dispatch({
+        type: GLOBALTYPES.ALERT,
+        payload: {},
+      });
+    } catch (error) {}
+  };
+
+
+export const updateCampaignDateNow = () => async (dispatch) => {
+  try {
+    dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
+    const res = await patchDataAPI(`update-campaign-disable`);
+    dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const filterCampaign =
+  ({ technology, position, page, value }) =>
+  async (dispatch) => {
+    console.log(value);
+    try {
+      const search = value ? `&search=${value}` : "";
+      const res = await getDataAPI(
+        `get-all-campaign?${search}&page=${page}&position=${position}&technology=${technology}`
+      );
+      console.log(res);
+      dispatch({
+        type: CAMPAIGN_TYPES.GET_CAMPAIGNS,
+        payload: {
+          data: res.data.result.campaigns,
+          total: res.data.result.total,
+        },
+      });
+    } catch (error) {}
+  };
+

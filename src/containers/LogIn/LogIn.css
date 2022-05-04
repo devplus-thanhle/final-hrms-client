@@ -1,0 +1,42 @@
+.App {
+    text-align: center;
+    background: linear-gradient(120deg, #2980b9, #8e44ad);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.login-form {
+    position: absolute;
+    top: 150px;
+    width: 600px;
+    justify-content: center;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.05);
+}
+
+.login-form h2 {
+    text-align: center;
+    font-size: 30px;
+    font-family: sans-serif;
+    padding: 10px 0;
+}
+
+.login-form-forgot {
+    float: right;
+    margin-right: 75px;
+}
+
+.ant-col-rtl .login-form-forgot {
+    float: left;
+}
+
+.login-form-button {
+    width: 400px;
+    margin-left: 50px;
+}
+
+.alert {
+    text-align: left;
+    margin-bottom: 30px;
+}
