@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { HomeFilled } from "@ant-design/icons";
@@ -31,7 +31,7 @@ export default function ViewDetailCampaign() {
         >
           <Space className="space-apply">
             <div className="title_detail">{todo?.title}</div>
-            <Link to={``}>
+            <Link to={`/campaigns/apply/${id}`}>
               <Button className="button-apply" type="primary" danger>
                 Apply CV
               </Button>

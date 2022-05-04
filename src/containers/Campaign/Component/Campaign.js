@@ -90,29 +90,12 @@ const Campaign = () => {
 
     dispatch(getCampaignActive());
   };
-  // function handleClick(e) {
-  //   console.log("hhhh",e);
-  //   ViewDetailCampaign(e)
 
-  //   navigate({
-  //     pathname: "/campaigns/detail",
-  //   });
-  // };
-  //---------
-  // const detaiValue = (items) => {
-  //   // setidCampaigns(e._id)
-  //   // console.log("thanhcong", e._id);
-  //    ViewDetailCampaign(items)
-
-  //   navigate({
-  //     pathname: "/campaigns/detail",
-  //   });
-  // };
 
   return (
     <div>
       <Row justify="center">
-        <Col span={6}>
+        <Col >
           <Space className="search_div">
             <Search
               placeholder="Search Keyword skill (NodeJs, ReactJs...), Job Title, Company..."
