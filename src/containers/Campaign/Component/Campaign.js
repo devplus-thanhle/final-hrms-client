@@ -1,19 +1,67 @@
-import React, { useEffect, useState } from "react";
-import { Tag, Card, Col, Row, Input, Pagination, Table } from "antd";
-import { getCampaignActive } from "../../../shared/actions/campaignActiveAction";
-import "./campaign.css";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable no-unused-vars */
+import { HomeFilled } from "@ant-design/icons";
+import {
+  Button,
+  Card,
+  Col,
+  Divider,
+  Input,
+  Layout,
+  Pagination,
+  Radio,
+  Row,
+  Space,
+  Tag,
+  Typography,
+} from "antd";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from "react-router-dom";
+import {
+  filterCampaignActive,
+  getCampaignActive,
+} from "../../../shared/actions/campaignActiveAction";
+import "./campaign.css";
+import ViewDetailCampaign from "./viewDetailCampaign";
+
+const { Header, Footer, Sider, Content } = Layout;
+const { Title, Text, Paragraph } = Typography;
+
 const { Meta } = Card;
 const { Search } = Input;
 const onSearch = (value) => console.log(value);
 
-export default function Campaign() {
+const Campaign = () => {
   const { search } = useLocation();
   const navigate = useNavigate();
+  const [idCampaigns, setidCampaigns] = useState();
   const dispatch = useDispatch();
-  const { campaigns, count, loading } = useSelector((state) => state.campaignCandidates);
+  const { campaigns, count, loading, total } = useSelector(
+    (state) => state.campaignCandidates
+  );
   const [page, setPage] = useState(1);
+  const [position, setPosition] = useState("");
+  const [technology, setTechnology] = useState("");
+  const [isCollapse, setIsCollapse] = useState(true);
+  const handleShowCollapse = () => {
+    setIsCollapse(!isCollapse);
+  };
+  const handleSubmit = (value) => {
+    navigate({
+      pathname: "/campaigns",
+      search: `?search=${search}&page=${page}&position=${position}&technology=${technology}`,
+    });
+    dispatch(filterCampaignActive({ position, technology, page, value }));
+  };
 
   useEffect(() => {
     const page = new URLSearchParams(search).get("page") || 1;
@@ -21,89 +69,215 @@ export default function Campaign() {
   }, [search]);
 
   useEffect(() => {
-    dispatch(getCampaignActive(page));
+    const value = new URLSearchParams(search).get("search") || "";
+    const position = new URLSearchParams(search).get("position") || "";
+    setPosition(position);
+
+    const technology = new URLSearchParams(search).get("technology") || "";
+    setTechnology(technology);
+    if (search) {
+      dispatch(filterCampaignActive({ position, technology, page, value }));
+    } else {
+      dispatch(getCampaignActive(page));
+    }
   }, [dispatch, page]);
+  const handleReset = () => {
+    setPosition("");
+    setTechnology("");
+    navigate({
+      pathname: "/campaigns",
+    });
+
+    dispatch(getCampaignActive());
+  };
+  // function handleClick(e) {
+  //   console.log("hhhh",e);
+  //   ViewDetailCampaign(e)
+
+  //   navigate({
+  //     pathname: "/campaigns/detail",
+  //   });
+  // };
+  //---------
+  // const detaiValue = (items) => {
+  //   // setidCampaigns(e._id)
+  //   // console.log("thanhcong", e._id);
+  //    ViewDetailCampaign(items)
+
+  //   navigate({
+  //     pathname: "/campaigns/detail",
+  //   });
+  // };
+
   return (
-    <div className="campaign-container">
-       <Row justify="center" >
-       <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 8 }} span={5} className="cards_item" style={{ width: "20%" }}>
-        <Search
-          placeholder="Search Campaign"
-          allowClear
-          enterButton="Search"
-          size="large"
-          onSearch={onSearch}
-        />
-      </Col>
+    <div>
+      <Row justify="center">
+        <Col span={6}>
+          <Space className="search_div">
+            <Search
+              placeholder="Search Keyword skill (NodeJs, ReactJs...), Job Title, Company..."
+              allowClear
+              enterButton="Search"
+              size="large"
+              onSearch={(value) => {
+                handleSubmit(value);
+              }}
+              className="search_button"
+            />
+            <Button
+              className="reset_button"
+              onClick={handleReset}
+              type="primary"
+            >
+              Reset
+            </Button>
+          </Space>
+        </Col>
       </Row>
-      <>
-        <Row justify="center" >
-          {campaigns.map((campaign) => (
-            <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 8 }} span={5} className="cards_item" >
-              <Card className="card_body">
-                <div className="card_image">
-                  <img
-                    src={campaign.image}
-                    style={{ aspectRatio: "1", width: "100%" }}
-                  />
-                </div>
-                <div className="card_content">
-                  
-                  <h2 className="card_title">{campaign.title}</h2>
-                  <p className="card_text" style={{ height: "auto" }}>
-                    Technologies :   
-                    {campaign.technology.map((tl) => (
+
+      <Layout>
+        <Sider className="sider_campaigns">
+          <Title level={3}>
+            <Text strong>Filter:</Text>
+          </Title>
+          <Divider plain></Divider>
+          <Radio.Group
+            style={{
+              width: "100%",
+              padding: "10px",
+            }}
+            onChange={(e) => setPosition(e.target.value)}
+            value={position}
+          >
+            <Title level={5}>
+              <Text type="secondary">Position</Text>
+            </Title>
+
+            <Space direction="vertical">
+              <Radio value="Intern">Intern</Radio>
+              <Radio value="Junior">Junior</Radio>
+              <Radio value="Senior">Senior</Radio>
+              <Radio value="Fresher">Fresher</Radio>
+              <Radio value="Middle">Middle</Radio>
+              <Radio value="HR">HR</Radio>
+            </Space>
+          </Radio.Group>
+          <Divider plain></Divider>
+          <Radio.Group
+            style={{
+              width: "100%",
+              padding: "10px",
+            }}
+            onChange={(e) => setTechnology(e.target.value)}
+            value={technology}
+          >
+            <Title level={5}>
+              <Text type="secondary">Technology</Text>
+            </Title>
+
+            <Space direction="vertical">
+              <Radio value="NodeJs">NodeJs</Radio>
+              <Radio value="ReactJs">ReactJs</Radio>
+              <Radio value="Php">Php</Radio>
+              <Radio value="VueJs">VueJs</Radio>
+              <Radio value="Python">Python</Radio>
+              <Radio value="Blockchain">Blockchain</Radio>
+              <Radio value="Java">Java</Radio>
+              <Radio value=".Net">.Net</Radio>
+            </Space>
+          </Radio.Group>
+        </Sider>
+        <Content className="content_campaigns">
+          <Title level={3}>Recommended Jobs</Title>
+          <Row gutter={[16, 16]}>
+            {campaigns.map((item) => (
+              <Col
+                xs={{ span: 24 }}
+                sm={{ span: 12 }}
+                md={{ span: 8 }}
+                xl={8}
+                span={5}
+                className="cards_item"
+              >
+                <Link to={`/campaigns/detail/${item._id}`}>
+                  <Card
+                    className="card_campaigns"
+                    hoverable
+                    style={{ width: 320 }}
+                    cover={<img className="image_card" src={item.image} />}
+                  >
+                    <Title level={4}>
+                      <Text strong>
+                        {item.title.length < 30
+                          ? item.title
+                          : item.title.slice(0, 24) + "..."}
+                      </Text>
+                    </Title>
+                    {item.technology.map((technology) => (
                       <Tag
                         style={{
                           color: "#08979c",
                           backgroundColor: "#e6fffb",
                           borderColor: "#87e8de",
+                          borderRadius: "10px",
                         }}
                       >
-                        {tl}
+                        {technology}
                       </Tag>
                     ))}
-                  </p>
-                  <p className="card_text" > Position: 
-                    {campaign.position.map((ps) => (
+
+                    <Title className="title_position" level={5}>
+                      <Text type="secondary">Position:</Text>
                       <Tag
+                        className="tag_position"
                         style={{
                           color: "green",
                           backgroundColor: "#f6ffed",
                           borderColor: "#b7eb8f",
-                          
                         }}
                       >
-                        {ps}
+                        {item.position}
                       </Tag>
-                    ))}
-                  </p>
-                  <p className="card_text">
-                    End Day : {campaign.endDate.slice(0, 10)}
-                  </p>
-                  <Link to={`/campaigns/detail/${campaign._id}`}>
-                    <button className="btn card_btn">View Detail</button>
-                  </Link>
-                </div>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </>
-      <div>
-       <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 8 }} span={5}  style={{ float: 'right'}}> 
-        <Pagination
-          defaultCurrent={1}
-          pageSize = {8}
-          total= {count}
-          current={page}
-          onChange={(num) => {
-            dispatch(getCampaignActive(num));
-            navigate(`/campaigns/?page=${num}`);
-          }}
-        />
-      </Col> 
-      </div>
+                    </Title>
+                    <Text className="date_card">
+                      {new Date(item.startDate).toLocaleDateString("vi-GB")} -
+                      {new Date(item.endDate).toLocaleDateString("vi-GB")}
+                    </Text>
+                    <br></br>
+                    <HomeFilled className="icon_card" />
+                    <Text className="text_address" strong>
+                      {item.address}
+                    </Text>
+                    <Link to={`/campaigns/detail/${item._id}`}>
+                      <Button
+                        className="button_campaign"
+                        type="primary"
+                        shape="round"
+                        size="large"
+                      >
+                        Apply
+                      </Button>
+                    </Link>
+                  </Card>
+                </Link>
+              </Col>
+            ))}
+          </Row>
+        </Content>
+      </Layout>
+      <br></br>
+      <Pagination
+        style={{ float: "right" }}
+        pageSize={9}
+        total={total}
+        defaultCurrent={10}
+        current={page}
+        onChange={(num) => {
+          dispatch(getCampaignActive(num));
+          navigate(`/campaigns/?page=${num}`);
+        }}
+      />
     </div>
   );
-}
+};
+export default Campaign;
