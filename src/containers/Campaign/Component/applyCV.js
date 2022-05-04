@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Upload, InputNumber, Button, Breadcrumb, message } from "antd";
+import { Form, Input, Upload, InputNumber, Button, Breadcrumb, message, Spin } from "antd";
 import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,6 +33,8 @@ export default function ApplyCV() {
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
   const [pdf, setPdf] = useState("");
+  const {loading} = useSelector(state => state.profiles )
+  console.log(loading)
   const normFile = (e) => {
     if (Array.isArray(e)) {
       return e;
@@ -52,7 +54,7 @@ export default function ApplyCV() {
   };
 
   const paramId = window.location.pathname.split("/").pop();
-  const onFinish = (values) => {
+  const onFinish =  (values) => {
     data.append("fullname", values.name);
     data.append("email", values.email);
     data.append("phone", values.phone);
@@ -60,12 +62,14 @@ export default function ApplyCV() {
     data.append("image", image);
     data.append("pdf", pdf);
     data.append("id", paramId);
+   
+    message.success('Apply SuccessFully!');
+     dispatch(createProfile(data, paramId));
     navigate('/campaigns');
-    message.success('Thank You!');
-    dispatch(createProfile(data, paramId));
   };
   return (
     <div>
+      <Spin spinning={loading}>
       <Breadcrumb
         style={{
           margin: "16px 0",
@@ -173,6 +177,7 @@ export default function ApplyCV() {
           </Button>
         </Form.Item>
       </Form>
+      </Spin>
     </div>
   );
 }

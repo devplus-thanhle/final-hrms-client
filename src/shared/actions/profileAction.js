@@ -10,7 +10,11 @@ export const PROFILE_TYPES = {
 };
 export const createProfile = (data, id) => async (dispatch) => {
   try {
-    const res = await postDataAPI("create-profile", data);
+    dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
+
+    await postDataAPI("create-profile", data);
+    dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
+
   } catch (error) {
     console.log(error);
   }
