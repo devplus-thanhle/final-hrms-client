@@ -29,7 +29,13 @@ const campaignReducer = (state = initialState, action) => {
         ...state,
         campaign: action.payload.data,
       };
-
+    case CAMPAIGN_TYPES.GET_CAMPAIGNS:
+      return {
+        ...state,
+        campaigns: action.payload.data,
+        total: action.payload.total,
+        page: action.payload.page,
+      };
     default:
       return state;
   }
