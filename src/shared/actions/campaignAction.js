@@ -8,6 +8,7 @@ export const CAMPAIGN_TYPES = {
   GET_CAMPAIGN_ID: "GET_CAMPAIGN_ID",
   GET_CAMPAIGN_ACTIVE: "GET_CAMPAIGN_ACTIVE",
   GET_CAMPAIGN_BY_ID: "GET_CAMPAIGN_BY_ID",
+  GET_CAMPAIGN_OF_MONTH: "GET_CAMPAIGN_OF_MONTH",
 };
 
 export const getCampaign = (page) => async (dispatch) => {
@@ -31,8 +32,8 @@ export const getCampaignById = (id) => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
     const res = await getDataAPI(`get-campaign/${id}`);
-    console.log(res)
-    console.log(id)
+    console.log(res);
+    console.log(id);
     dispatch({
       type: CAMPAIGN_TYPES.GET_CAMPAIGN_BY_ID,
       payload: {
@@ -102,11 +103,10 @@ export const updateCampaign =
     } catch (error) {}
   };
 
-
 export const updateCampaignDateNow = () => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
-    const res = await patchDataAPI(`update-campaign-disable`);
+    await patchDataAPI(`update-campaign-disable`);
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
   } catch (error) {
     console.log(error);
@@ -133,3 +133,24 @@ export const filterCampaign =
     } catch (error) {}
   };
 
+export const getCampaignOfMonth = () => async (dispatch) => {
+  try {
+    dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
+    const res = await getDataAPI("count-campaign-of-month");
+    const ress = await getDataAPI("count-profiles-of-month");
+    dispatch({
+      type: CAMPAIGN_TYPES.GET_CAMPAIGN_OF_MONTH,
+      payload: {
+        campaignOfMonth: res.data.result,
+        profilesOfMonth: ress.data.result.profileOfMonth,
+        profileAccept: ress.data.result.profileAccept,
+        profileProcessing: ress.data.result.profileProcessing,
+        allProfiles: ress.data.result.allprofile,
+        profileReject: ress.data.result.profileReject,
+      },
+    });
+    dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: false });
+  } catch (error) {
+    console.log(error);
+  }
+};
