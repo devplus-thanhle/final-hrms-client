@@ -3,6 +3,7 @@ import { GLOBALTYPES } from "./globalTypes";
 
 export const CAMPAIGN_TYPES = {
   GET_CAMPAIGN: "GET_CAMPAIGN",
+  GET_CAMPAIGNS: "GET_CAMPAIGNS",
   LOADING_CAMPAIGN: "LOADING_CAMPAIGN",
   GET_CAMPAIGN_ID: "GET_CAMPAIGN_ID",
   GET_CAMPAIGN_ACTIVE: "GET_CAMPAIGN_ACTIVE",
@@ -98,6 +99,7 @@ export const updateCampaign =
     } catch (error) {}
   };
 
+
 export const updateCampaignDateNow = () => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
@@ -107,3 +109,24 @@ export const updateCampaignDateNow = () => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const filterCampaign =
+  ({ technology, position, page, value }) =>
+  async (dispatch) => {
+    console.log(value);
+    try {
+      const search = value ? `&search=${value}` : "";
+      const res = await getDataAPI(
+        `get-all-campaign?${search}&page=${page}&position=${position}&technology=${technology}`
+      );
+      console.log(res);
+      dispatch({
+        type: CAMPAIGN_TYPES.GET_CAMPAIGNS,
+        payload: {
+          data: res.data.result.campaigns,
+          total: res.data.result.total,
+        },
+      });
+    } catch (error) {}
+  };
+
