@@ -1,32 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
-import {
-  Tag,
-  Card,
-  Col,
-  Row,
-  Input,
-  Pagination,
-  Table,
-  Carousel,
-  Image,
-  Layout,
-  Divider,
-  Typography,
-  Radio,
-  Space,
-  Button,
-} from "antd";
 import { HomeFilled } from "@ant-design/icons";
 import {
-  getCampaignActive,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Input,
+  Layout,
+  Pagination,
+  Radio,
+  Row,
+  Space,
+  Tag,
+  Typography,
+} from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  useLocation,
+  useNavigate,
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from "react-router-dom";
+import {
   filterCampaignActive,
+  getCampaignActive,
 } from "../../../shared/actions/campaignActiveAction";
 import "./campaign.css";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import ViewDetailCampaign from "./viewDetailCampaign";
+
 const { Header, Footer, Sider, Content } = Layout;
 const { Title, Text, Paragraph } = Typography;
 
@@ -37,6 +43,7 @@ const onSearch = (value) => console.log(value);
 const Campaign = () => {
   const { search } = useLocation();
   const navigate = useNavigate();
+  const [idCampaigns, setidCampaigns] = useState();
   const dispatch = useDispatch();
   const { campaigns, count, loading, total } = useSelector(
     (state) => state.campaignCandidates
@@ -45,14 +52,13 @@ const Campaign = () => {
   const [position, setPosition] = useState("");
   const [technology, setTechnology] = useState("");
   const [isCollapse, setIsCollapse] = useState(true);
-    
   const handleShowCollapse = () => {
     setIsCollapse(!isCollapse);
   };
   const handleSubmit = (value) => {
     navigate({
       pathname: "/campaigns",
-      search: `?search=${search}&page=${page}&position=${position}&technology=${technology}`,
+      search: `?search=${value}&page=${page}&position=${position}&technology=${technology}`,
     });
     dispatch(filterCampaignActive({ position, technology, page, value }));
   };
@@ -84,31 +90,54 @@ const Campaign = () => {
 
     dispatch(getCampaignActive());
   };
+  // function handleClick(e) {
+  //   console.log("hhhh",e);
+  //   ViewDetailCampaign(e)
+
+  //   navigate({
+  //     pathname: "/campaigns/detail",
+  //   });
+  // };
+  //---------
+  // const detaiValue = (items) => {
+  //   // setidCampaigns(e._id)
+  //   // console.log("thanhcong", e._id);
+  //    ViewDetailCampaign(items)
+
+  //   navigate({
+  //     pathname: "/campaigns/detail",
+  //   });
+  // };
+
   return (
     <div>
-       <Row justify="center">
-      <Col span={6}>
-      <Space className="search_div">
-        <Search
-          placeholder="Search Keyword skill (NodeJs, ReactJs...), Job Title, Company..."
-          allowClear
-          enterButton="Search"
-          size="large"
-          onSearch={(value) => {
-            handleSubmit(value);
-          }}
-          className="search_button"
-        />
-        <Button className="reset_button" onClick={handleReset} type="primary">
-          Reset
-        </Button>
-      </Space>
-      </Col>
-    </Row>
-     
+      <Row justify="center">
+        <Col span={6}>
+          <Space className="search_div">
+            <Search
+              placeholder="Search Keyword skill (NodeJs, ReactJs...), Job Title, Company..."
+              allowClear
+              enterButton="Search"
+              size="large"
+              onSearch={(value) => {
+                handleSubmit(value);
+              }}
+              className="search_button"
+            />
+            <Button
+              className="reset_button"
+              onClick={handleReset}
+              type="primary"
+              size="large"
+
+            >
+              Reset
+            </Button>
+          </Space>
+        </Col>
+      </Row>
 
       <Layout>
-        
         <Sider className="sider_campaigns">
           <Title level={3}>
             <Text strong>Filter:</Text>
@@ -172,59 +201,67 @@ const Campaign = () => {
                 span={5}
                 className="cards_item"
               >
-                <Card
-                  className="card_campaigns"
-                  hoverable
-                  style={{ width: 320 }}
-                  cover={<img className="image_card" src={item.image} />}
-                >
-                  <Title level={4}>
-                    <Text strong>{item.title}</Text>
-                  </Title>
-                  {item.technology.map((technology) => (
-                    <Tag
-                      style={{
-                        color: "#08979c",
-                        backgroundColor: "#e6fffb",
-                        borderColor: "#87e8de",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      {technology}
-                    </Tag>
-                  ))}
-
-                  <Title className="title_position" level={5}>
-                    <Text type="secondary">Position:</Text>
-                    <Tag
-                      className="tag_position"
-                      style={{
-                        color: "green",
-                        backgroundColor: "#f6ffed",
-                        borderColor: "#b7eb8f",
-                      }}
-                    >
-                      {item.position}
-                    </Tag>
-                  </Title>
-                  <Text className="date_card">
-                    {new Date(item.startDate).toLocaleDateString("vi-GB")} -
-                    {new Date(item.endDate).toLocaleDateString("vi-GB")}
-                  </Text>
-                  <br></br>
-                  <HomeFilled className="icon_card" />
-                  <Text className="text_address" strong>
-                    {item.address}
-                  </Text>
-                  <Button
-                    className="button_campaign"
-                    type="primary"
-                    shape="round"
-                    size="large"
+                <Link to={`/campaigns/detail/${item._id}`}>
+                  <Card
+                    className="card_campaigns"
+                    hoverable
+                    style={{ width: 320 }}
+                    cover={<img className="image_card" src={item.image} />}
                   >
-                    Apply
-                  </Button>
-                </Card>
+                    <Title level={4}>
+                      <Text strong>
+                        {item.title.length < 30
+                          ? item.title
+                          : item.title.slice(0, 24) + "..."}
+                      </Text>
+                    </Title>
+                    {item.technology.map((technology) => (
+                      <Tag
+                        style={{
+                          color: "#08979c",
+                          backgroundColor: "#e6fffb",
+                          borderColor: "#87e8de",
+                          borderRadius: "10px",
+                        }}
+                      >
+                        {technology}
+                      </Tag>
+                    ))}
+
+                    <Title className="title_position" level={5}>
+                      <Text type="secondary">Position:</Text>
+                      <Tag
+                        className="tag_position"
+                        style={{
+                          color: "green",
+                          backgroundColor: "#f6ffed",
+                          borderColor: "#b7eb8f",
+                        }}
+                      >
+                        {item.position}
+                      </Tag>
+                    </Title>
+                    <Text className="date_card">
+                      {new Date(item.startDate).toLocaleDateString("vi-GB")} -
+                      {new Date(item.endDate).toLocaleDateString("vi-GB")}
+                    </Text>
+                    <br></br>
+                    <HomeFilled className="icon_card" />
+                    <Text className="text_address" strong>
+                      {item.address}
+                    </Text>
+                    <Link to={`/campaigns/detail/${item._id}`}>
+                      <Button
+                        className="button_campaign"
+                        type="primary"
+                        shape="round"
+                        size="large"
+                      >
+                        Apply
+                      </Button>
+                    </Link>
+                  </Card>
+                </Link>
               </Col>
             ))}
           </Row>

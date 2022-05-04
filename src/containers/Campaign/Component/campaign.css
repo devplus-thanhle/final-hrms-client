@@ -181,12 +181,86 @@
   margin-top: 5px;
 }
 .search_button{
-	width: 650px;
+	width: 450px;
   margin: 0 auto;
   display: block;
+}
+.search_div{
+  width: 100%;
 }
 .reset_button{
   margin: 0 auto;
   display: block;
+
+}
+/* Css Details Campaign */
+.title_detail{
+  margin: 0 auto;
+  margin-top: 20px;
+font-weight:bold;
+font-size: 25px;
+width: 100%;
+
+margin-left: 4%;
+}
+.position_detail{
+  font-weight:500;
+  font-size: 18px;
+color: #636e72;
+}
+.positionTag_detail{
+  margin: 0 auto;
+  margin-left: 2%;
+
+}
+.technologyTag_detail{
+  margin: 0 auto;
+  margin-left: 2%;
+}
+.Datelimit_detail{
+  margin: 0 auto;
+font-weight:500;
+font-size: 18px;
+color: #636e72;
+
+}
+.Datelimit_Text{
+color: #dba848;
+font-weight:500;
+margin: 0 auto;
+font-size: 18px;
+
+}
+.description_detail ul li{
+  /* margin: 0 auto; */
+  margin-left: 5%;
+
+}
+.space_company{
+  display:block;
+  width: auto;
+}
+.company_detail{
+height: 350px; 
+position: sticky;
+top:10px;
+background-color: rgb(223, 230, 233);
+}
+.space-apply{
+  position: sticky;
+  top:0px;
+  margin: 0 auto;
+  width: 100%;
+  background-color: rgb(223, 230, 233);
+  z-index: 1;
+  display: block;
+}
+.button-apply{
+  text-align: center;
+  color: white;
+  width: 92%;
+  height: 42px;
+  margin:0 auto ;
+  margin-left: 4%;
 
 }

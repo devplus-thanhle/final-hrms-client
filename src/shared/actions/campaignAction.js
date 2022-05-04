@@ -31,6 +31,8 @@ export const getCampaignById = (id) => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
     const res = await getDataAPI(`get-campaign/${id}`);
+    console.log(res)
+    console.log(id)
     dispatch({
       type: CAMPAIGN_TYPES.GET_CAMPAIGN_BY_ID,
       payload: {
@@ -42,6 +44,7 @@ export const getCampaignById = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+
 export const getCampaignActiveById = (id) => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
