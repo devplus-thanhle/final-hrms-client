@@ -12,6 +12,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import jwtDecode from "jwt-decode";
 import { logOut } from "../../shared/actions/loginAction";
+import { updateCampaignDateNow } from "../../shared/actions/campaignAction";
 
 const { Header, Sider, Content } = Layout;
 
@@ -60,14 +61,22 @@ const Dasboard = () => {
   const user = useSelector((state) => state.login.user);
 
   useEffect(() => {
-    const decodeToken = jwtDecode(token);
-    if (decodeToken.exp < new Date().getTime() / 1000) {
-      dispatch(logOut());
+    if (token) {
+      const decoded = jwtDecode(token);
+      if (decoded.exp < Date.now() / 1000) {
+        dispatch(logOut());
+      }
+    } else {
+      navigate("/login");
     }
   });
 
   useEffect(() => {
     if (!token) navigate("/login");
+  });
+
+  useEffect(() => {
+    dispatch(updateCampaignDateNow());
   });
   const handleLogout = () => {
     dispatch(logOut());

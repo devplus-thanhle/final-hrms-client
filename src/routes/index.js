@@ -5,6 +5,8 @@ import Dashboard from "../containers/Dashboard/index";
 import NotFound from "../containers/404Page/index";
 import Campaign from "../containers/Campaign/index";
 import Comingsoon from "../containers/HomePage/comingsoon";
+import ForgotPassword from "../containers/LogIn/ForgotPassword";
+import ChangePassword from "../containers/LogIn/ChangePassword";
 
 export const routes = [
   {
@@ -22,6 +24,14 @@ export const routes = [
   {
     path: "/login",
     component: <LogIn />,
+  },
+  {
+    path: "/forgot-password",
+    component: <ForgotPassword />,
+  },
+  {
+    path: "/reset-password/:id",
+    component: <ChangePassword />,
   },
   {
     path: "*",
