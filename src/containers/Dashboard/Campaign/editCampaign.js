@@ -21,6 +21,7 @@ import {
 } from "../../../shared/actions/campaignAction";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -29,6 +30,7 @@ const { Title } = Typography;
 const EditCampaign = () => {
   const [componentSize, setComponentSize] = useState("default");
   const { loading, campaign } = useSelector((state) => state.campaigns);
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [text, setText] = useState("");
   const [fileList, setFileList] = useState("");
@@ -73,7 +75,7 @@ const EditCampaign = () => {
       description: description,
       address: address,
       rangeTimePicker: [moment(startDate), moment(endDate)],
-      status: active === true ? "Active" : "Disable",
+      status: active === true ? true : false,
       quantity,
       position: position,
       technology: technology,
@@ -108,10 +110,11 @@ const EditCampaign = () => {
     data.append("technology", values.technology);
     data.append("position", values.position);
     data.append("status", values.status);
-
-    console.log(values.description);
+    console.log(values.status);
+    console.log(values.position);
 
     dispatch(updateCampaign({ id: campaignData._id, data }));
+    navigate("/dashboard/campaign");
   };
 
   const onFinishFailed = (errorInfo) => {

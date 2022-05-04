@@ -59,7 +59,7 @@ const CreateCampaign = () => {
     console.log(startDate, endDate);
 
     await dispatch(createCampaign(data));
-    // navigate("/dashboard/campaign");
+    navigate("/dashboard/campaign");
   };
 
   const onFinishFailed = (errorInfo) => {
