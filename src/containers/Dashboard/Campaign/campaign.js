@@ -27,6 +27,8 @@ import {
   FilterOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
+import * as XLSX from "xlsx";
+
 const { Search } = Input;
 const { Header, Footer, Sider, Content } = Layout;
 const { Title, Text, Paragraph } = Typography;
@@ -186,10 +188,12 @@ const Campaign = () => {
     dispatch(getCampaign(page));
   }, [dispatch, page]);
 
-  useEffect(() => {
-    const today = new Date().toLocaleDateString("vi-GB");
-    console.log(today);
-  });
+  const handleExport = () => {
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.json_to_sheet(campaigns);
+    XLSX.utils.book_append_sheet(wb, ws, "MySheet1");
+    XLSX.writeFile(wb, "campaigns.xlsx");
+  };
 
   return (
     <>
@@ -233,7 +237,11 @@ const Campaign = () => {
                       >
                         Filter
                       </Button>
-                      <Button type="default" icon={<ExportOutlined />}>
+                      <Button
+                        onClick={handleExport}
+                        type="default"
+                        icon={<ExportOutlined />}
+                      >
                         Export
                       </Button>
                     </Space>

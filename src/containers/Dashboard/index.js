@@ -5,7 +5,8 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
-  VideoCameraOutlined,
+  AreaChartOutlined,
+  ReadOutlined,
 } from "@ant-design/icons";
 import RootRouter from "./Router";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -20,37 +21,19 @@ const navigation = [
   {
     name: "Statistic",
     path: "/dashboard",
-    icon: <UserOutlined />,
+    icon: <AreaChartOutlined />,
   },
   {
     name: "Campaign",
     path: "/dashboard/campaign",
-    icon: <UserOutlined />,
+    icon: <ReadOutlined />,
   },
   {
     name: "Profile",
     path: "/dashboard/profile",
-    icon: <VideoCameraOutlined />,
+    icon: <UserOutlined />,
   },
 ];
-const menu = (
-  <Menu
-    items={[
-      {
-        label: "Logout",
-      },
-      {
-        label: "Logout",
-      },
-      {
-        label: "Logout",
-      },
-      {
-        label: "Logout",
-      },
-    ]}
-  />
-);
 
 const Dasboard = () => {
   const [open, setOpen] = useState(true);
