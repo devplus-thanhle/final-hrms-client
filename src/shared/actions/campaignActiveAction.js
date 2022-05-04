@@ -15,7 +15,6 @@ export const getCampaignActive = (page) => async (dispatch) => {
       payload: true,
     });
     const res = await getDataAPI(`get-all-campaignActive?page=${page}`);
-    console.log("aaaaaaaa", res);
     dispatch({
       type: CAMPAIGN_ACTIVE_TYPES.GET_CAMPAIGN_ACTIVE,
       payload: {
@@ -41,7 +40,6 @@ export const filterCampaignActive =
       const res = await getDataAPI(
         `get-all-campaignActive?${search}&page=${page}&position=${position}&technology=${technology}`
       );
-      console.log(res);
       dispatch({
         type: CAMPAIGN_ACTIVE_TYPES.GET_CAMPAIGN_ACTIVES,
         payload: {

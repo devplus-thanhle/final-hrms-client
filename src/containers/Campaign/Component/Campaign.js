@@ -80,7 +80,7 @@ const Campaign = () => {
     } else {
       dispatch(getCampaignActive(page));
     }
-  }, [dispatch, page, position, technology]);
+  }, [dispatch, page]);
   const handleReset = () => {
     setPosition("");
     setTechnology("");

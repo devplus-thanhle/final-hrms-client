@@ -47,7 +47,6 @@ export const getCampaignActiveById = (id) => async (dispatch) => {
   try {
     dispatch({ type: CAMPAIGN_TYPES.LOADING_CAMPAIGN, payload: true });
     const res = await getDataAPI(`get-campaign/${id}`);
-    console.log(res);
 
     dispatch({
       type: CAMPAIGN_TYPES.GET_CAMPAIGN_ID,

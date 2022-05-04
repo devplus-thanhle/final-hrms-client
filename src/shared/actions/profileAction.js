@@ -11,7 +11,6 @@ export const PROFILE_TYPES = {
 export const createProfile = (data, id) => async (dispatch) => {
   try {
     const res = await postDataAPI("create-profile", data);
-    console.log(res)
   } catch (error) {
     console.log(error);
   }
