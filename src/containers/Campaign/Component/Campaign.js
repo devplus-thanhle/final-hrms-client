@@ -129,7 +129,6 @@ const Campaign = () => {
               onClick={handleReset}
               type="primary"
               size="large"
-
             >
               Reset
             </Button>
@@ -270,9 +269,9 @@ const Campaign = () => {
       <br></br>
       <Pagination
         style={{ float: "right" }}
-        pageSize={9}
+        pageSize={3}
         total={total}
-        defaultCurrent={10}
+        // defaultCurrent={3}
         current={page}
         onChange={(num) => {
           dispatch(getCampaignActive(num));
