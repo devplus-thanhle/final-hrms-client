@@ -31,7 +31,7 @@ export default function ViewDetailCampaign() {
         >
           <Space className="space-apply">
             <div className="title_detail">{todo?.title}</div>
-            <Link to={``}>
+            <Link to={`/campaigns/apply/${id}`}>
               <Button className="button-apply" type="primary" danger>
                 Apply CV
               </Button>
