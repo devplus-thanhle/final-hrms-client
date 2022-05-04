@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./statistic.css";
-import { Col, Row, Divider, Tag, Progress, Statistic } from "antd";
+import { Col, Row, Divider, Tag, Progress, Statistic, Spin } from "antd";
 import { ArrowUpOutlined } from "@ant-design/icons";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getCampaignOfMonth } from "../../../shared/actions/campaignAction";
 
 const TopCard = ({ title, tagContent, tagColor, prefix }) => {
   return (
@@ -92,108 +93,123 @@ const PreviewState = ({ tag, color, value }) => {
   );
 };
 const Statistics = () => {
+  const dispatch = useDispatch();
+  const { campaignOfMonth, loading } = useSelector((state) => state.campaigns);
+  useEffect(() => {
+    dispatch(getCampaignOfMonth());
+  }, [dispatch]);
   return (
-    <div className="site-card-wrapper">
-      <Row gutter={[24, 24]}>
-        <Col xs={24} md={12} xl={6}>
-          <TopCard
-            title={"Campaign"}
-            tagColor={"cyan"}
-            prefix={"This month"}
-            tagContent={"3"}
-          />
-        </Col>
-        <Col xs={24} md={12} xl={6}>
-          <TopCard
-            title={"Profile"}
-            tagColor={"purple"}
-            prefix={"This month"}
-            tagContent={"30"}
-          />
-        </Col>
-        <Col xs={24} md={12} xl={6}>
-          <TopCard
-            title={"Accepted"}
-            tagColor={"green"}
-            prefix={"This month"}
-            tagContent={"15"}
-          />
-        </Col>
-        <Col xs={24} md={12} xl={6}>
-          <TopCard
-            title={"Pending"}
-            tagColor={"orange"}
-            prefix={"This month"}
-            tagContent={"10"}
-          />
-        </Col>
-      </Row>
-      <div className="space30"></div>
-      <Row gutter={[24, 24]}>
-        <Col className="gutter-row" span={18}>
-          <div className="whiteBox shadow" style={{ height: "380px" }}>
-            <Row className="pad10" gutter={[0, 0]}>
-              <Col className="gutter-row" span={8}>
-                <div className="pad15">
-                  <h3 style={{ color: "#22075e", marginBottom: 15 }}>
-                    Stat column 1
-                  </h3>
-                  <PreviewState tag={"Received"} color={"purple"} value={5} />
-                  <PreviewState tag={"Accepted"} color={"green"} value={5} />
-                  <PreviewState tag={"Rejected"} color={"orange"} value={12} />
-                </div>
-              </Col>
-              <Col className="gutter-row" span={8}>
-                {" "}
-                <div className="pad15">
-                  <h3 style={{ color: "#22075e", marginBottom: 15 }}>
-                    Stat column 2
-                  </h3>
-                  <PreviewState tag={"Received"} color={"purple"} value={3} />
-                  <PreviewState tag={"Accepted"} color={"green"} value={5} />
-                  <PreviewState tag={"Rejected"} color={"orange"} value={12} />
-                </div>
-              </Col>
-              <Col className="gutter-row" span={8}>
-                {" "}
-                <div className="pad15">
-                  <h3 style={{ color: "#22075e", marginBottom: 15 }}>
-                    Stat column 3
-                  </h3>
-                  <PreviewState tag={"Received"} color={"purple"} value={3} />
-                  <PreviewState tag={"Accepted"} color={"green"} value={5} />
-                  <PreviewState tag={"Rejected"} color={"orange"} value={12} />
-                </div>
-              </Col>
-            </Row>
-          </div>
-        </Col>
-        <Col className="gutter-row" span={6}>
-          <div className="whiteBox shadow" style={{ height: "380px" }}>
-            <div
-              className="pad20"
-              style={{ textAlign: "center", justifyContent: "center" }}
-            >
-              <h3 style={{ color: "#22075e", marginBottom: 30 }}>
-                Application received
-              </h3>
-              <Progress type="dashboard" percent={50} width={148} />
-              <p>Application compared to last month</p>
-              <Divider />
-              <Statistic
-                title="Null title"
-                value={50}
-                precision={2}
-                valueStyle={{ color: "#3f8600" }}
-                prefix={<ArrowUpOutlined />}
-                suffix="%"
-              />
+    <Spin spinning={loading}>
+      <div className="site-card-wrapper">
+        <Row gutter={[24, 24]}>
+          <Col xs={24} md={12} xl={6}>
+            <TopCard
+              title={"Campaign"}
+              tagColor={"cyan"}
+              prefix={"This month"}
+              tagContent={campaignOfMonth?.campaign}
+            />
+          </Col>
+          <Col xs={24} md={12} xl={6}>
+            <TopCard
+              title={"Profile"}
+              tagColor={"purple"}
+              prefix={"This month"}
+              tagContent={campaignOfMonth?.profile}
+            />
+          </Col>
+          <Col xs={24} md={12} xl={6}>
+            <TopCard
+              title={"Accepted"}
+              tagColor={"green"}
+              prefix={"All"}
+              tagContent={campaignOfMonth?.profileAccept}
+            />
+          </Col>
+          <Col xs={24} md={12} xl={6}>
+            <TopCard
+              title={"Processing"}
+              tagColor={"orange"}
+              prefix={"All"}
+              tagContent={campaignOfMonth?.profileProcessing}
+            />
+          </Col>
+        </Row>
+        <div className="space30"></div>
+        <Row gutter={[24, 24]}>
+          <Col className="gutter-row" span={18}>
+            <div className="whiteBox shadow" style={{ height: "380px" }}>
+              <Row className="pad10" gutter={[0, 0]}>
+                <Col className="gutter-row" span={24}>
+                  <div className="pad15">
+                    <h3 style={{ color: "#22075e", marginBottom: 15 }}>
+                      Percentage of profile's status on all campaigns
+                    </h3>
+                    <PreviewState
+                      tag={"Accepted"}
+                      color={"purple"}
+                      value={(
+                        campaignOfMonth?.profileAccept *
+                        (100 / campaignOfMonth?.allProfiles)
+                      ).toFixed(2)}
+                    />
+                    <PreviewState
+                      tag={"Processing"}
+                      color={"green"}
+                      value={(
+                        campaignOfMonth?.profileProcessing *
+                        (100 / campaignOfMonth?.allProfiles)
+                      ).toFixed(2)}
+                    />
+                    <PreviewState
+                      tag={"Rejected"}
+                      color={"red"}
+                      value={
+                        campaignOfMonth?.profileReject *
+                        (100 / campaignOfMonth?.allProfiles).toFixed(2)
+                      }
+                    />
+                  </div>
+                </Col>
+              </Row>
             </div>
-          </div>
-        </Col>
-      </Row>
-      <div className="space30"></div>
-    </div>
+          </Col>
+          <Col className="gutter-row" span={6}>
+            <div className="whiteBox shadow" style={{ height: "380px" }}>
+              <div
+                className="pad20"
+                style={{ textAlign: "center", justifyContent: "center" }}
+              >
+                <h3 style={{ color: "#22075e", marginBottom: 30 }}>
+                  Acceptance Rate
+                </h3>
+                <Progress
+                  type="dashboard"
+                  percent={(
+                    campaignOfMonth?.profileAccept *
+                    (100 / campaignOfMonth?.allProfiles)
+                  ).toFixed(2)}
+                  width={148}
+                />
+                <Divider />
+                <Statistic
+                  title="Up to"
+                  value={(
+                    campaignOfMonth?.profileAccept *
+                    (100 / campaignOfMonth?.allProfiles)
+                  ).toFixed(2)}
+                  precision={2}
+                  valueStyle={{ color: "#3f8600" }}
+                  prefix={<ArrowUpOutlined />}
+                  suffix="%"
+                />
+              </div>
+            </div>
+          </Col>
+        </Row>
+        <div className="space30"></div>
+      </div>
+    </Spin>
   );
 };
 
